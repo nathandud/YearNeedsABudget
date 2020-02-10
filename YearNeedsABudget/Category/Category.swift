@@ -9,7 +9,7 @@
 
 import Foundation
 
-struct Welcome: Codable {
+struct YnabResponse: Codable {
     let data: DataClass
 
     enum CodingKeys: String, CodingKey {

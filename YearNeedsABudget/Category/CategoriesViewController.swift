@@ -16,7 +16,7 @@ class CategoriesViewController: UIViewController {
         
         do {
             let responseData = MockData.categoryJsonResponse
-            let data = try JSONDecoder().decode(Welcome.self, from: responseData!)
+            let data = try JSONDecoder().decode(YnabResponse.self, from: responseData!)
             print(data)
         } catch {
             print(error.localizedDescription)
