@@ -13,6 +13,14 @@ class CategoriesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        do {
+            let responseData = MockData.categoryJsonResponse
+            let data = try JSONDecoder().decode(Welcome.self, from: responseData!)
+            print(data)
+        } catch {
+            print(error.localizedDescription)
+        }
     }
 }
 
