@@ -14,12 +14,37 @@ class CategoriesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if let json = getJson() {
+            storeJson(json)
+            readJson()
+        }
+    }
+    
+    func getJson() -> Data? {
+        return MockData.categoryJsonResponse
+    }
+    
+    func storeJson(_ jsonData: Data) {
+        let filename = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("output.json")
+        print(filename)
+        
         do {
-            let responseData = MockData.categoryJsonResponse
-            let data = try JSONDecoder().decode(YnabResponse.self, from: responseData!)
+            try jsonData.write(to: filename, options: [.completeFileProtection, .atomic])
+            print("Successfully stored JSON")
+        } catch {
+            print("Failed: \(error.localizedDescription)")
+        }
+    }
+    
+    func readJson()  {
+        let filename = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("output.json")
+        do {
+            let response = try Data(contentsOf: filename)
+            let data = try JSONDecoder().decode(YnabResponse.self, from: response)
+            debugPrint(data)
             print(data)
         } catch {
-            print(error.localizedDescription)
+            print(error)
         }
     }
 }

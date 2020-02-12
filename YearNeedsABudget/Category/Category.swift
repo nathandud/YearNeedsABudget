@@ -25,7 +25,7 @@ struct DataClass: Codable {
     }
 }
 
-/// MARK: - Month
+// MARK: - Month
 struct Month: Codable {
     let month: String
     let note: String?

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C676696923F3C628003AE8FC /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676696823F3C627003AE8FC /* ProgressBarView.swift */; };
 		C6F7F21923F1129E002FFC75 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7F21823F1129E002FFC75 /* AppDelegate.swift */; };
 		C6F7F21B23F1129E002FFC75 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7F21A23F1129E002FFC75 /* SceneDelegate.swift */; };
 		C6F7F21D23F1129E002FFC75 /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7F21C23F1129E002FFC75 /* CategoriesViewController.swift */; };
@@ -31,6 +32,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C676696823F3C627003AE8FC /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
 		C6F7F21523F1129E002FFC75 /* YearNeedsABudget.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YearNeedsABudget.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6F7F21823F1129E002FFC75 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C6F7F21A23F1129E002FFC75 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 			children = (
 				C6F7F21C23F1129E002FFC75 /* CategoriesViewController.swift */,
 				C6F7F23E23F12458002FFC75 /* CategoryViewModel.swift */,
+				C676696823F3C627003AE8FC /* ProgressBarView.swift */,
 				C6F7F24023F12479002FFC75 /* Category.swift */,
 			);
 			path = Category;
@@ -233,6 +236,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C676696923F3C628003AE8FC /* ProgressBarView.swift in Sources */,
 				C6F7F23F23F12458002FFC75 /* CategoryViewModel.swift in Sources */,
 				C6F7F24523F12FA6002FFC75 /* MockData.swift in Sources */,
 				C6F7F24123F12479002FFC75 /* Category.swift in Sources */,
