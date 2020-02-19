@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		C676696923F3C628003AE8FC /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676696823F3C627003AE8FC /* ProgressBarView.swift */; };
+		C676696D23FCFE4A003AE8FC /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676696C23FCFE4A003AE8FC /* Networking.swift */; };
+		C676696F23FD0077003AE8FC /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676696E23FD0077003AE8FC /* Logging.swift */; };
+		C676697123FD04A7003AE8FC /* CategoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676697023FD04A7003AE8FC /* CategoryRepository.swift */; };
+		C676697323FD061A003AE8FC /* CategoryApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676697223FD061A003AE8FC /* CategoryApiService.swift */; };
 		C6F7F21923F1129E002FFC75 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7F21823F1129E002FFC75 /* AppDelegate.swift */; };
 		C6F7F21B23F1129E002FFC75 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7F21A23F1129E002FFC75 /* SceneDelegate.swift */; };
 		C6F7F21D23F1129E002FFC75 /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7F21C23F1129E002FFC75 /* CategoriesViewController.swift */; };
@@ -33,6 +37,10 @@
 
 /* Begin PBXFileReference section */
 		C676696823F3C627003AE8FC /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
+		C676696C23FCFE4A003AE8FC /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
+		C676696E23FD0077003AE8FC /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
+		C676697023FD04A7003AE8FC /* CategoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRepository.swift; sourceTree = "<group>"; };
+		C676697223FD061A003AE8FC /* CategoryApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryApiService.swift; sourceTree = "<group>"; };
 		C6F7F21523F1129E002FFC75 /* YearNeedsABudget.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YearNeedsABudget.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6F7F21823F1129E002FFC75 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C6F7F21A23F1129E002FFC75 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -68,6 +76,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C676696B23FCFE0F003AE8FC /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				C676696C23FCFE4A003AE8FC /* Networking.swift */,
+				C676696E23FD0077003AE8FC /* Logging.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
 		C6F7F20C23F1129E002FFC75 = {
 			isa = PBXGroup;
 			children = (
@@ -95,6 +112,7 @@
 				C6F7F22323F112A0002FFC75 /* LaunchScreen.storyboard */,
 				C6F7F23D23F12409002FFC75 /* Category */,
 				C6F7F24323F12F69002FFC75 /* Mock */,
+				C676696B23FCFE0F003AE8FC /* Utility */,
 				C6F7F22123F112A0002FFC75 /* Assets.xcassets */,
 				C6F7F22623F112A1002FFC75 /* Info.plist */,
 			);
@@ -117,6 +135,8 @@
 				C6F7F23E23F12458002FFC75 /* CategoryViewModel.swift */,
 				C676696823F3C627003AE8FC /* ProgressBarView.swift */,
 				C6F7F24023F12479002FFC75 /* Category.swift */,
+				C676697023FD04A7003AE8FC /* CategoryRepository.swift */,
+				C676697223FD061A003AE8FC /* CategoryApiService.swift */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -239,9 +259,13 @@
 				C676696923F3C628003AE8FC /* ProgressBarView.swift in Sources */,
 				C6F7F23F23F12458002FFC75 /* CategoryViewModel.swift in Sources */,
 				C6F7F24523F12FA6002FFC75 /* MockData.swift in Sources */,
+				C676697123FD04A7003AE8FC /* CategoryRepository.swift in Sources */,
+				C676697323FD061A003AE8FC /* CategoryApiService.swift in Sources */,
+				C676696D23FCFE4A003AE8FC /* Networking.swift in Sources */,
 				C6F7F24123F12479002FFC75 /* Category.swift in Sources */,
 				C6F7F21D23F1129E002FFC75 /* CategoriesViewController.swift in Sources */,
 				C6F7F21923F1129E002FFC75 /* AppDelegate.swift in Sources */,
+				C676696F23FD0077003AE8FC /* Logging.swift in Sources */,
 				C6F7F21B23F1129E002FFC75 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -338,6 +362,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_SWIFT_FLAGS = "-DMOCK";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -391,6 +416,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "-DMOCK";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
