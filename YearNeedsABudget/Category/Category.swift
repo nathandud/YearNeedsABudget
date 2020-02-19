@@ -9,7 +9,8 @@
 
 import Foundation
 
-struct YnabResponse: Codable {
+//This class represents the
+struct CategoriesByMonthDataClass: Codable {
     let data: DataClass
 
     enum CodingKeys: String, CodingKey {

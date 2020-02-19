@@ -40,7 +40,7 @@ class CategoriesViewController: UIViewController {
         let filename = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("output.json")
         do {
             let response = try Data(contentsOf: filename)
-            let data = try JSONDecoder().decode(YnabResponse.self, from: response)
+            let data = try JSONDecoder().decode(CategoriesByMonthDataClass.self, from: response)
             debugPrint(data)
             print(data)
         } catch {
