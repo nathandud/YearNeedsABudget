@@ -11,7 +11,7 @@ import Foundation
 class CategoryRepository {
     
     private var latestCategories: [Category] = []
-    var isStale = false
+    var isStale = true
     
     init() { }
     
@@ -19,12 +19,13 @@ class CategoryRepository {
         if !isStale, !latestCategories.isEmpty {
             return latestCategories
         } else {
-            fetchCategories()
+            CategoryApiService.fetchCategories { (categories, error) in
+                guard error == nil else { return }
+                if let data = categories {
+                    self.latestCategories = data
+                }
+            }
         }
         return latestCategories
-    }
-    
-    private func fetchCategories() {
-        
     }
 }

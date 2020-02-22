@@ -31,7 +31,7 @@ class Networking {
         }
     }
     
-    static func sendRequest(httpMethod: HttpMethod, endpoint: String, httpBody: Data?, onCompletion: @escaping (Data) -> (), onError: @escaping (String) -> () ) {
+    static func sendRequest(httpMethod: HttpMethod = .get, endpoint: String, httpBody: Data? = nil, onCompletion: @escaping (Data) -> (), onError: @escaping (String) -> () ) {
         DispatchQueue.global(qos: .userInitiated).async {
             guard let url = URL(string: endpoint) else {
                 onError("Error: Cannot create URL.")
