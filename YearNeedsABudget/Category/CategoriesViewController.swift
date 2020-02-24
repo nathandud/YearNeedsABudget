@@ -13,8 +13,9 @@ import os.log
 class CategoriesViewController: UIViewController {
     
     let viewModel: CategoryViewModel
+    weak var coordinator: Coordinator?
     
-    init(viewModel: CategoryViewModel) {
+    init(viewModel: CategoryViewModel, coordinator: Coordinator) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -32,20 +33,12 @@ class CategoriesViewController: UIViewController {
         return tableView
     }()
     
-
-    
-
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         categoryTableView.delegate = self
         categoryTableView.dataSource = self
-
-        
     }
 }
-
-
 
 extension CategoriesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
