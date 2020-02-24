@@ -41,6 +41,7 @@ class Networking {
             var urlRequest = URLRequest(url: url)
             let session = URLSession(configuration: URLSessionConfiguration.default)
             urlRequest.httpMethod = httpMethod.rawValue.uppercased()
+            urlRequest.addValue("Bearer \(Temp.bearerToken)", forHTTPHeaderField: "Authorization")
             
             if httpBody != nil {
                 urlRequest.httpBody = httpBody

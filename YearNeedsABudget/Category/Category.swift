@@ -66,7 +66,7 @@ struct Category: Codable {
     let goalCreationMonth: String?
     let goalTarget: Int
     let goalTargetMonth: String?
-    let goalPercentageComplete: String?
+    let goalPercentageComplete: Int?
     let deleted: Bool
 
     enum CodingKeys: String, CodingKey {

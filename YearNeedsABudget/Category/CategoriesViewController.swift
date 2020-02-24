@@ -8,56 +8,51 @@
 
 import UIKit
 import SnapKit
+import os.log
 
 class CategoriesViewController: UIViewController {
     
+    let viewModel: CategoryViewModel
+    
+    init(viewModel: CategoryViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    lazy var categoryTableView: UITableView = {
+        let tableView = UITableView()
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        return tableView
+    }()
+    
+
+    
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        categoryTableView.delegate = self
+        categoryTableView.dataSource = self
+
         
-        if let json = getJson() {
-            storeJson(json)
-            readJson()
-        }
-    }
-    
-    func getJson() -> Data? {
-        return MockData.categoryJsonResponse
-    }
-    
-    func storeJson(_ jsonData: Data) {
-        let filename = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("output.json")
-        print(filename)
-        
-        do {
-            try jsonData.write(to: filename, options: [.completeFileProtection, .atomic])
-            print("Successfully stored JSON")
-        } catch {
-            print("Failed: \(error.localizedDescription)")
-        }
-    }
-    
-    func readJson()  {
-        let filename = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("output.json")
-        do {
-            let response = try Data(contentsOf: filename)
-            let data = try JSONDecoder().decode(CategoriesByMonthDataClass.self, from: response)
-            debugPrint(data)
-            print(data)
-        } catch {
-            print(error)
-        }
     }
 }
 
+
+
 extension CategoriesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return UITableViewCell()
     }
-    
-    
 }
-

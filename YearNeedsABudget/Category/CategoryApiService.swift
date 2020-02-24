@@ -22,10 +22,10 @@ struct CategoryApiService {
         Networking.sendRequest(httpMethod: .get, endpoint: endpoint, httpBody: nil, onCompletion: { response in
             do {
                 let categories = try JSONDecoder().decode(CategoriesByMonthDataClass.self, from: response)
-                os_log("Successfully returned data for %{PUBLIC}@ categories", log: .networking, type: .info, categories.data.month.categories?.count ?? 0)
+                os_log("Successfully returned data for %{PUBLIC}@ categories", log: .networking, type: .info, "\(categories.data.month.categories?.count ?? 0)")
                 onCompletion(categories.data.month.categories, nil)
             } catch {
-                os_log("Could not parse categories JSON response")
+                os_log("Could not parse categories JSON response: %{PUBLIC}@", log: .networking, type: .error, error.localizedDescription)
             }
         }, onError: { message in
             os_log("%{PUBLIC}@", log: .networking, type: .error, message)
