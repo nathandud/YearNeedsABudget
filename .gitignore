@@ -40,6 +40,7 @@ playground.xcworkspace
 # Package.resolved
 .build/
 
+
 # CocoaPods
 #
 # We recommend against adding the Pods directory to your .gitignore. However
@@ -50,3 +51,4 @@ playground.xcworkspace
 #
 # Add this line if you want to avoid checking in source code from the Xcode workspace
 # *.xcworkspace
+Scratch.swift
