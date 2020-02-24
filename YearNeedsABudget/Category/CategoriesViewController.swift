@@ -37,15 +37,23 @@ class CategoriesViewController: UIViewController {
         super.viewDidLoad()
         categoryTableView.delegate = self
         categoryTableView.dataSource = self
+        viewModel.refreshData(onCompletion: { success in
+            guard success else { return }
+            DispatchQueue.main.async {
+                self.categoryTableView.reloadData()
+            }
+        })
     }
 }
 
 extension CategoriesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return viewModel.categories.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        let cell = UITableViewCell()
+        cell.textLabel?.text = viewModel.categories[indexPath.row].name
+        return cell
     }
 }

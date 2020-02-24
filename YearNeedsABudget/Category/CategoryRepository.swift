@@ -39,6 +39,7 @@ class CategoryRepository: Observerable {
                 guard error == nil else { return self.broadcastCompletion(with: false) }
                 if let data = categories {
                     self.latestCategories = data
+                    self.isStale = false
                     self.broadcastCompletion(with: true)
                 }
             }
