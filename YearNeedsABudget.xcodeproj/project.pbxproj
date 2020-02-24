@@ -12,7 +12,7 @@
 		C676696F23FD0077003AE8FC /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676696E23FD0077003AE8FC /* Logging.swift */; };
 		C676697123FD04A7003AE8FC /* CategoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676697023FD04A7003AE8FC /* CategoryRepository.swift */; };
 		C676697323FD061A003AE8FC /* CategoryApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676697223FD061A003AE8FC /* CategoryApiService.swift */; };
-		C676697524039FC7003AE8FC /* Scratch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676697424039FC7003AE8FC /* Scratch.swift */; };
+		C67669772403A4F3003AE8FC /* Scratch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67669762403A4F3003AE8FC /* Scratch.swift */; };
 		C6F7F21923F1129E002FFC75 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7F21823F1129E002FFC75 /* AppDelegate.swift */; };
 		C6F7F21B23F1129E002FFC75 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7F21A23F1129E002FFC75 /* SceneDelegate.swift */; };
 		C6F7F21D23F1129E002FFC75 /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7F21C23F1129E002FFC75 /* CategoriesViewController.swift */; };
@@ -42,7 +42,7 @@
 		C676696E23FD0077003AE8FC /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		C676697023FD04A7003AE8FC /* CategoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRepository.swift; sourceTree = "<group>"; };
 		C676697223FD061A003AE8FC /* CategoryApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryApiService.swift; sourceTree = "<group>"; };
-		C676697424039FC7003AE8FC /* Scratch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scratch.swift; sourceTree = "<group>"; };
+		C67669762403A4F3003AE8FC /* Scratch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scratch.swift; sourceTree = "<group>"; };
 		C6F7F21523F1129E002FFC75 /* YearNeedsABudget.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YearNeedsABudget.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6F7F21823F1129E002FFC75 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C6F7F21A23F1129E002FFC75 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -90,6 +90,7 @@
 		C6F7F20C23F1129E002FFC75 = {
 			isa = PBXGroup;
 			children = (
+				C67669762403A4F3003AE8FC /* Scratch.swift */,
 				C6F7F21723F1129E002FFC75 /* YearNeedsABudget */,
 				C6F7F22E23F112A1002FFC75 /* YearNeedsABudgetTests */,
 				C6F7F21623F1129E002FFC75 /* Products */,
@@ -147,7 +148,6 @@
 			isa = PBXGroup;
 			children = (
 				C6F7F24423F12FA6002FFC75 /* MockData.swift */,
-				C676697424039FC7003AE8FC /* Scratch.swift */,
 			);
 			path = Mock;
 			sourceTree = "<group>";
@@ -263,7 +263,7 @@
 				C6F7F23F23F12458002FFC75 /* CategoryViewModel.swift in Sources */,
 				C6F7F24523F12FA6002FFC75 /* MockData.swift in Sources */,
 				C676697123FD04A7003AE8FC /* CategoryRepository.swift in Sources */,
-				C676697524039FC7003AE8FC /* Scratch.swift in Sources */,
+				C67669772403A4F3003AE8FC /* Scratch.swift in Sources */,
 				C676697323FD061A003AE8FC /* CategoryApiService.swift in Sources */,
 				C676696D23FCFE4A003AE8FC /* Networking.swift in Sources */,
 				C6F7F24123F12479002FFC75 /* Category.swift in Sources */,
