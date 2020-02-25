@@ -1,5 +1,5 @@
 //
-//  Category.swift
+//  YNABCategoriesByMonthDataClass.swift
 //  YearNeedsABudget
 //
 //  Created by Nathan Dudley on 2/9/20.
