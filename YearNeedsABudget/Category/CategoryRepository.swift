@@ -8,27 +8,20 @@
 
 import Foundation
 
-protocol Observerable {
-    func addObserver(observer: CategoryObserver)
-    func removeObserver(observer: CategoryObserver)
-}
 
-protocol CategoryObserver {
-    var uuid: UUID { get }
-    func categoriesReturned(successfully: Bool)
-}
 
 class CategoryRepository: Observerable {
-    func addObserver(observer: CategoryObserver) {
-        observers[observer.uuid] = observer
+
+    func addObserver(observer: Observer, closure: @escaping (Bool) -> Void) {
+        observers[observer.uuid] = closure
     }
     
-    func removeObserver(observer: CategoryObserver) {
+    func removeObserver(observer: Observer) {
         observers.removeValue(forKey: observer.uuid)
     }
     
     private var latestCategories: [Category] = []
-    private var observers = [UUID: CategoryObserver]()
+    private var observers = [UUID: (Bool) -> Void]()
     var isStale = true
     
     init() { }
@@ -48,7 +41,9 @@ class CategoryRepository: Observerable {
     }
     
     private func broadcastCompletion(with success: Bool) {
-        observers.values.forEach { $0.categoriesReturned(successfully: success) }
+        observers.values.forEach { closure in
+            closure(success)
+        }
     }
 }
 

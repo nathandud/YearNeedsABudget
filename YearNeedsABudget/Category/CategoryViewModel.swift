@@ -8,8 +8,8 @@
 
 import Foundation
 
-//Ideally a struct, right?
-class CategoryViewModel: CategoryObserver {
+class CategoryViewModel: Observer {
+    
     var uuid: UUID
     var categories: [Category] = []
     private let repository: CategoryRepository
@@ -18,18 +18,15 @@ class CategoryViewModel: CategoryObserver {
     init(repository: CategoryRepository) {
         self.repository = repository
         self.uuid = UUID()
-        self.repository.addObserver(observer: self)
+        self.repository.addObserver(observer: self) { (result) in
+            self.categories = repository.getLatestCategories()
+            self.onDataRefresh?(result)
+        }
     }
     
     func refreshData(onCompletion: @escaping (Bool) -> Void) {
         categories = repository.getLatestCategories()
         onDataRefresh = onCompletion
-    }
-    
-    func categoriesReturned(successfully: Bool) {
-        print("Categories Returned: \(repository.getLatestCategories().count)")
-        categories = repository.getLatestCategories()
-        if let completion = onDataRefresh { completion(successfully) }
     }
     
     deinit {
