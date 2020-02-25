@@ -16,6 +16,7 @@
 		C67669792403A5FA003AE8FC /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67669782403A5FA003AE8FC /* Coordinator.swift */; };
 		C676697B2404D687003AE8FC /* ObservationProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676697A2404D687003AE8FC /* ObservationProtocols.swift */; };
 		C676697D2404D898003AE8FC /* YNABCategoriesByMonthDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676697C2404D898003AE8FC /* YNABCategoriesByMonthDataClass.swift */; };
+		C676697F2404DDF8003AE8FC /* CategoryAnnualSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676697E2404DDF8003AE8FC /* CategoryAnnualSummary.swift */; };
 		C6F7F21923F1129E002FFC75 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7F21823F1129E002FFC75 /* AppDelegate.swift */; };
 		C6F7F21B23F1129E002FFC75 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7F21A23F1129E002FFC75 /* SceneDelegate.swift */; };
 		C6F7F21D23F1129E002FFC75 /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7F21C23F1129E002FFC75 /* CategoriesViewController.swift */; };
@@ -47,6 +48,7 @@
 		C67669782403A5FA003AE8FC /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		C676697A2404D687003AE8FC /* ObservationProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservationProtocols.swift; sourceTree = "<group>"; };
 		C676697C2404D898003AE8FC /* YNABCategoriesByMonthDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YNABCategoriesByMonthDataClass.swift; sourceTree = "<group>"; };
+		C676697E2404DDF8003AE8FC /* CategoryAnnualSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryAnnualSummary.swift; sourceTree = "<group>"; };
 		C6F7F21523F1129E002FFC75 /* YearNeedsABudget.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YearNeedsABudget.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6F7F21823F1129E002FFC75 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C6F7F21A23F1129E002FFC75 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -115,7 +117,7 @@
 				C67669782403A5FA003AE8FC /* Coordinator.swift */,
 				C6F7F21A23F1129E002FFC75 /* SceneDelegate.swift */,
 				C6F7F22323F112A0002FFC75 /* LaunchScreen.storyboard */,
-				C6F7F23D23F12409002FFC75 /* Category */,
+				C6F7F23D23F12409002FFC75 /* CategoryAnnual */,
 				C6F7F24323F12F69002FFC75 /* Mock */,
 				C676696B23FCFE0F003AE8FC /* Utility */,
 				C6F7F22123F112A0002FFC75 /* Assets.xcassets */,
@@ -133,17 +135,18 @@
 			path = YearNeedsABudgetTests;
 			sourceTree = "<group>";
 		};
-		C6F7F23D23F12409002FFC75 /* Category */ = {
+		C6F7F23D23F12409002FFC75 /* CategoryAnnual */ = {
 			isa = PBXGroup;
 			children = (
 				C6F7F21C23F1129E002FFC75 /* CategoriesViewController.swift */,
 				C6F7F23E23F12458002FFC75 /* CategoryViewModel.swift */,
 				C676696823F3C627003AE8FC /* ProgressBarView.swift */,
-				C676697C2404D898003AE8FC /* YNABCategoriesByMonthDataClass.swift */,
 				C676697023FD04A7003AE8FC /* CategoryRepository.swift */,
 				C676697223FD061A003AE8FC /* CategoryApiService.swift */,
+				C676697E2404DDF8003AE8FC /* CategoryAnnualSummary.swift */,
+				C676697C2404D898003AE8FC /* YNABCategoriesByMonthDataClass.swift */,
 			);
-			path = Category;
+			path = CategoryAnnual;
 			sourceTree = "<group>";
 		};
 		C6F7F24323F12F69002FFC75 /* Mock */ = {
@@ -269,6 +272,7 @@
 				C676697B2404D687003AE8FC /* ObservationProtocols.swift in Sources */,
 				C676697123FD04A7003AE8FC /* CategoryRepository.swift in Sources */,
 				C67669772403A4F3003AE8FC /* Scratch.swift in Sources */,
+				C676697F2404DDF8003AE8FC /* CategoryAnnualSummary.swift in Sources */,
 				C676697323FD061A003AE8FC /* CategoryApiService.swift in Sources */,
 				C676696D23FCFE4A003AE8FC /* Networking.swift in Sources */,
 				C6F7F21D23F1129E002FFC75 /* CategoriesViewController.swift in Sources */,

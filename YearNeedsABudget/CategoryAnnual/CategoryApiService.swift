@@ -32,6 +32,4 @@ struct CategoryApiService {
             onCompletion(nil, message)
         })
     }
-    
-
 }
