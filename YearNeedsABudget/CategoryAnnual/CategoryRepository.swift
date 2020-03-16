@@ -25,7 +25,7 @@ class CategoryRepository {
         //Need a method to mark files as stale if user opts for some sort of full refresh
     }
     
-    func getSyncStatuses() -> [String: SyncProgressMonth]? {
+    func getSyncStatuses() -> [String: MonthSyncStatus]? {
         return nil
     }
     

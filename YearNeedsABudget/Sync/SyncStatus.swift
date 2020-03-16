@@ -10,23 +10,15 @@ import Foundation
 
 enum SyncStatus: Int {
     case upToDate = 0
-    case outOfDate = 2
     case inProgress = 1
+    case outOfDate = 2
 }
 
-enum SyncRequestType {
-    case thisMonth
-    case lastTwoMonths
-    case lastThreeMonths
-    case lastSixMonths
-    case fullCalendarYear
-}
-
-struct SyncProgressYear: Codable {
+struct YearSyncStatus: Codable {
     let year: Int
-    let syncProgressMonths: [SyncProgressMonth]
+    let syncProgressMonths: [MonthSyncStatus]
     
-    init(year: Int, syncProgressMonths: [SyncProgressMonth] = []) {
+    init(year: Int, syncProgressMonths: [MonthSyncStatus] = []) {
         self.year = year
         self.syncProgressMonths = syncProgressMonths
     }
@@ -37,7 +29,7 @@ struct SyncProgressYear: Codable {
     }
 }
 
-struct SyncProgressMonth: Codable {
+struct MonthSyncStatus: Codable {
     let status: SyncStatus
     let month: Int
     let lastSyncTime: Date?
@@ -76,3 +68,13 @@ struct SyncProgressMonth: Codable {
         case lastSyncTime = "last_sync_time"
     }
 }
+
+enum SyncRequestType {
+    case thisMonth
+    case lastTwoMonths
+    case lastThreeMonths
+    case lastSixMonths
+    case fullCalendarYear
+}
+
+
