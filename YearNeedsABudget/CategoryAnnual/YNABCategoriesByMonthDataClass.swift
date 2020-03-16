@@ -9,7 +9,7 @@
 
 import Foundation
 
-//This class represents the
+//This class represents the top-level object returned from the Categories Endpoint
 struct CategoriesByMonthDataClass: Codable {
     let data: DataClass
 

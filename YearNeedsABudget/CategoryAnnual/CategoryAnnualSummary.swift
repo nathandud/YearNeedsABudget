@@ -9,14 +9,21 @@
 import Foundation
 
 struct CategoryAnnualSummary {
-//    let categoryId: String
-//    let categoryGroupID: String
-//    let name: String
-//    let note: String?
-//    let budgeted: Int
-//    let activity: Int
-//    let balance: Int
-//    let monthlySummaries
+    let categoryId: String
+    let categoryGroupId: String
+    let name: String
+    let budgeted: Int
+    let activity: Int
+    let balance: Int
+    let months: [MonthlySummary]
     
-    init() { }
+    init(categoryId: String, categoryGroupId: String, name: String, budgeted: Int, activity: Int, balance: Int, months: [MonthlySummary]) {
+        self.categoryId = categoryId
+        self.categoryGroupId = categoryGroupId
+        self.name = name
+        self.budgeted = budgeted
+        self.activity = activity
+        self.balance = balance
+        self.months = months
+    }
 }

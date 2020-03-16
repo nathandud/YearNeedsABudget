@@ -7,7 +7,7 @@
 //
 
 struct MockData {
-    static let categoryJsonResponse =
+    static let januaryResponse =
     """
     {
         "data": {
@@ -76,5 +76,81 @@ struct MockData {
             }
         }
     }
+    """.data(using: .utf8)
+    
+    static let syncProgress =
+    """
+    [
+        {
+            "year" : 2019,
+            "syncProgress" : [
+                {
+                    "month" : 1,
+                    "syncStatus" : 2
+                },
+                {
+                    "month" : 2,
+                    "syncStatus" : 2
+                },
+                {
+                    "month" : 3,
+                    "syncStatus" : 2
+                },
+                {
+                    "month" : 4,
+                    "syncStatus" : 2
+                },
+                {
+                    "month" : 5,
+                    "syncStatus" : 2
+                },
+                {
+                    "month" : 6,
+                    "syncStatus" : 2
+                },
+                {
+                    "month" : 7,
+                    "syncStatus" : 2
+                },
+                {
+                    "month" : 8,
+                    "syncStatus" : 2
+                },
+                {
+                    "month" : 9,
+                    "syncStatus" : 2
+                },
+                {
+                    "month" : 10,
+                    "syncStatus" : 2
+                },
+                {
+                    "month" : 11,
+                    "syncStatus" : 2
+                },
+                {
+                    "month" : 12,
+                    "syncStatus" : 2
+                }
+             ]
+        },
+        {
+            "year" : 2020,
+            "syncProgress" : [
+                {
+                    "month" : 1,
+                    "syncStatus" : 2
+                },
+                {
+                    "month" : 2,
+                    "syncStatus" : 2
+                },
+                {
+                    "month" : 3,
+                    "syncStatus" : 2
+                }
+             ]
+        }
+    ]
     """.data(using: .utf8)
 }
