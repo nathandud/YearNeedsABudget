@@ -18,23 +18,22 @@ class CategoryRepository {
     
     init() { }
     
-    private func loadSummariesIfNeeded() {
-        //TODO:
-        //Have some sort of dictionary with months and last refreshed times
-        //Use logic to determine if any files are stale
-        //Need a method to mark files as stale if user opts for some sort of full refresh
+    func getMonthsNeedingRefresh() -> [Int] {
+        let currentYear = Calendar.current.component(.year, from: Date())
+        if let syncStatus = SyncStatusService.fetchSyncProgress(year: currentYear) {
+            
+        }
+        return [0]
     }
     
-    func getSyncStatuses() -> [String: MonthSyncStatus]? {
-        return nil
-    }
+    //TODO: Need to add a way to save the sync status when app is backgrounded. This will probably be in the scene delegate
     
     func getLatestCategories() -> [Category] {
         if isStale || latestCategories.isEmpty {
-            CategoryApiService.fetchMonthlySummary(month: 1 /* Change this out */) { (categories, error) in
+            CategoryApiService.fetchMonthlySummary(month: 1 /* Change this out */) { (montlySummary, error) in
                 guard error == nil else { return self.broadcastCompletion(with: false) }
-                if let data = categories {
-                    self.latestCategories = data.categories! //Obviously need to change this later
+                if let categories = montlySummary?.categories {
+                    self.latestCategories = categories //Obviously need to change this later
                     self.isStale = false
                     self.broadcastCompletion(with: true)
                 }

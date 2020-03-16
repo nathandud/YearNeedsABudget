@@ -13,7 +13,7 @@ struct SyncStatusService {
     
     private static let fileUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("sync_progress.json")
     
-    static func fetchSyncProgress(for year: Int) -> YearSyncStatus? {
+    static func fetchSyncProgress(year: Int) -> YearSyncStatus? {
         do {
             let json = try Data(contentsOf: fileUrl)
             let syncProgress = try JSONDecoder().decode([YearSyncStatus].self, from: json)
@@ -33,30 +33,41 @@ struct SyncStatusService {
         }
     }
     
-    static func initializeSyncProgressFile() {
+    static func updateSyncProgressFile() {
         if !fileExists() {
-            let currentYear = Calendar.current.component(.year, from: Date())
-            let currentMonth = Calendar.current.component(.month, from: Date())
-            var syncMonths: [MonthSyncStatus] = []
-            
-            for month in 1...currentMonth {
-                let monthSyncProgress = MonthSyncStatus(month: month)
-                syncMonths.append(monthSyncProgress)
-            }
-            let yearSyncProgress = YearSyncStatus(year: currentYear, syncProgressMonths: syncMonths)
-            saveSyncProgress(syncYear: yearSyncProgress)
-            
-            if fileExists() { os_log("Successfully initiated new sync status file", log: .repository, type: .info) }
+            createNewSyncProgressFile()
+        } else {
+            //TODO: Method needed for looping through and updating the statuses based on certain rules of last sync date
+            // For example - if there isn't a month for the current month create one
+            //             - if the last sync time of last month is over a day old, set out-of-sync
+            //             - if the last sync time of this month is over 10 minutes old, set out-of-sync
+            //             - if the last sync time of two months ago is over three days old, set out-of-sync
+            //             - anything older, set out-of-sync if it is over a week old
         }
     }
     
     private static func fileExists() -> Bool {
         do {
             let _ = try Data(contentsOf: fileUrl)
-            print(fileUrl)
+            //print(fileUrl)
             return true
         } catch {
             return false
         }
+    }
+    
+    private static func createNewSyncProgressFile {
+        let currentYear = Calendar.current.component(.year, from: Date())
+        let currentMonth = Calendar.current.component(.month, from: Date())
+        var syncMonths: [MonthSyncStatus] = []
+        
+        for month in 1...currentMonth {
+            let monthSyncProgress = MonthSyncStatus(month: month)
+            syncMonths.append(monthSyncProgress)
+        }
+        let yearSyncProgress = YearSyncStatus(year: currentYear, syncProgressMonths: syncMonths)
+        saveSyncProgress(syncYear: yearSyncProgress)
+        
+        if fileExists() { os_log("Successfully initiated new sync status file", log: .repository, type: .info) }
     }
 }
