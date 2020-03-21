@@ -56,7 +56,7 @@ struct SyncStatusService {
         }
     }
     
-    private static func createNewSyncProgressFile {
+    private static func createNewSyncProgressFile() {
         let currentYear = Calendar.current.component(.year, from: Date())
         let currentMonth = Calendar.current.component(.month, from: Date())
         var syncMonths: [MonthSyncStatus] = []
