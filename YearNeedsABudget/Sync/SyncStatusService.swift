@@ -11,45 +11,58 @@ import os.log
 
 struct SyncStatusService {
     
-    private static let fileUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("sync_progress.json")
-    
-    static func fetchSyncProgress(year: Int) -> YearSyncStatus? {
+    //MARK: - Public
+    static func fetchYearlySyncSummary(for year: Int = currentYear) -> YearlySyncSummary? {
         do {
-            let json = try Data(contentsOf: fileUrl)
-            let syncProgress = try JSONDecoder().decode([YearSyncStatus].self, from: json)
+            let json = try Data(contentsOf: getFileUrl(year))
+            let syncProgress = try JSONDecoder().decode([YearlySyncSummary].self, from: json)
             return syncProgress.first { $0.year == year }
         } catch {
-            os_log("Failed to fetch sync progress year %{PUBLIC}@: %{PUBLIC}@", log: .repository, type: .error, "\(year)", error.localizedDescription)
+            os_log("Failed to fetch sync progress year for %{PUBLIC}@: %{PUBLIC}@", log: .repository, type: .error, "\(year)", error.localizedDescription)
             return nil
         }
     }
     
-    static func saveSyncProgress(syncYear: YearSyncStatus) {
+    static func saveYearlySyncSummary(_ syncYear: YearlySyncSummary) {
         do {
             let jsonData = try JSONEncoder().encode(syncYear)
-            try jsonData.write(to: fileUrl, options: [.completeFileProtection, .atomic])
+            try jsonData.write(to: getFileUrl(syncYear.year), options: [.completeFileProtection, .atomic])
         } catch {
             os_log("Failed to save sync status file: %{PUBLIC}@", log: .repository, type: .error, error.localizedDescription)
         }
     }
     
-    static func updateSyncProgressFile() {
-        if !fileExists() {
+    static func updateSyncProgressFile(year: Int = currentYear, fullReset: Bool = false) {
+        guard let currentSyncStatus = fetchYearlySyncSummary(for: year), !fullReset else {
             createNewSyncProgressFile()
-        } else {
-            //TODO: Method needed for looping through and updating the statuses based on certain rules of last sync date
-            // For example - if there isn't a month for the current month create one
-            //             - if the last sync time of last month is over a day old, set out-of-sync
-            //             - if the last sync time of this month is over 10 minutes old, set out-of-sync
-            //             - if the last sync time of two months ago is over three days old, set out-of-sync
-            //             - anything older, set out-of-sync if it is over a week old
+            return
         }
+        
+        var monthlyStatuses: [MonthSyncStatus] = []
+        let monthCount = year == currentYear ? Calendar.current.component(.month, from: Date()) : 12
+        
+        for month in 1...monthCount {
+            guard let syncMonth = currentSyncStatus.monthlyStatuses.first(where: { $0.month == month }), isUpToDate(syncMonth: syncMonth) else {
+                monthlyStatuses.append(MonthSyncStatus(month))
+                return
+            }
+            monthlyStatuses.append(syncMonth)
+        }
+        
+        saveYearlySyncSummary(YearlySyncSummary(year, monthlyStatuses: monthlyStatuses))
     }
     
-    private static func fileExists() -> Bool {
+    //MARK: - Private
+    private static let currentYear = Calendar.current.component(.year, from: Date())
+    private static let currentMonth = Calendar.current.component(.month, from: Date())
+
+    private static func getFileUrl(_ year: Int = currentYear) -> URL {
+        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("sync_progress_\(year).json")
+    }
+    
+    private static func fileExists(for year: Int = currentYear) -> Bool {
         do {
-            let _ = try Data(contentsOf: fileUrl)
-            //print(fileUrl)
+            let _ = try Data(contentsOf: getFileUrl(year))
             return true
         } catch {
             return false
@@ -62,12 +75,32 @@ struct SyncStatusService {
         var syncMonths: [MonthSyncStatus] = []
         
         for month in 1...currentMonth {
-            let monthSyncProgress = MonthSyncStatus(month: month)
-            syncMonths.append(monthSyncProgress)
+            let monthStatus = MonthSyncStatus(month)
+            syncMonths.append(monthStatus)
         }
-        let yearSyncProgress = YearSyncStatus(year: currentYear, syncProgressMonths: syncMonths)
-        saveSyncProgress(syncYear: yearSyncProgress)
+        let yearlySummary = YearlySyncSummary(currentYear, monthlyStatuses: syncMonths)
+        saveYearlySyncSummary(yearlySummary)
         
-        if fileExists() { os_log("Successfully initiated new sync status file", log: .repository, type: .info) }
+        if fileExists() { os_log("Successfully initiated new sync status file for %{PUBLIC}@", log: .repository, type: .info, "\(yearlySummary.year)") }
+    }
+    
+    private static let tenMinutes: TimeInterval = 60 * 10
+    private static let oneDay: TimeInterval = 60 * 60 * 24
+    private static let oneWeek: TimeInterval = 60 * 60 * 24 * 7
+    
+    private static func isUpToDate(syncMonth: MonthSyncStatus) -> Bool {
+        guard let lastSync = syncMonth.lastSyncTime else { return false }
+        let monthsAgo = currentMonth - syncMonth.month
+        
+        switch monthsAgo {
+        case 0:
+            return Calendar.current.compare(Date().addingTimeInterval(tenMinutes), to: lastSync, toGranularity: .minute) == .orderedAscending
+        case 1:
+            return Calendar.current.compare(Date().addingTimeInterval(oneDay), to: lastSync, toGranularity: .minute) == .orderedAscending
+        case 2:
+            return Calendar.current.compare(Date().addingTimeInterval(oneDay * 3), to: lastSync, toGranularity: .minute) == .orderedAscending
+        default:
+            return Calendar.current.compare(Date().addingTimeInterval(oneWeek), to: lastSync, toGranularity: .minute) == .orderedAscending
+        }
     }
 }

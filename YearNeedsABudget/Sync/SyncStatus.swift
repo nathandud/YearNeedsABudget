@@ -14,18 +14,18 @@ enum SyncStatus: Int {
     case outOfDate = 2
 }
 
-struct YearSyncStatus: Codable {
+struct YearlySyncSummary: Codable {
     let year: Int
-    let syncProgressMonths: [MonthSyncStatus]
+    let monthlyStatuses: [MonthSyncStatus]
     
-    init(year: Int, syncProgressMonths: [MonthSyncStatus] = []) {
+    init(_ year: Int, monthlyStatuses: [MonthSyncStatus] = []) {
         self.year = year
-        self.syncProgressMonths = syncProgressMonths
+        self.monthlyStatuses = monthlyStatuses
     }
     
     enum CodingKeys: String, CodingKey {
         case year = "year"
-        case syncProgressMonths = "sync_progress"
+        case monthlyStatuses = "sync_progress"
     }
 }
 
@@ -34,7 +34,7 @@ struct MonthSyncStatus: Codable {
     let month: Int
     let lastSyncTime: Date?
     
-    init(month: Int, status: SyncStatus = .outOfDate, lastSyncTime: Date? = nil) {
+    init(_ month: Int, status: SyncStatus = .outOfDate, lastSyncTime: Date? = nil) {
         self.status = status
         self.month = month
         self.lastSyncTime = lastSyncTime

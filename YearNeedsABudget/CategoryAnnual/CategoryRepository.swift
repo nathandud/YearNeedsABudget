@@ -19,11 +19,11 @@ class CategoryRepository {
     init() { }
     
     func getMonthsNeedingRefresh() -> [Int] {
-        let currentYear = Calendar.current.component(.year, from: Date())
-        if let syncStatus = SyncStatusService.fetchSyncProgress(year: currentYear) {
-            
+        guard let syncStatus = SyncStatusService.fetchYearlySyncSummary() else { return [] }
+        return syncStatus.monthlyStatuses.compactMap { (monthStatus) -> Int? in
+            guard monthStatus.status != .upToDate else { return nil }
+            return monthStatus.month
         }
-        return [0]
     }
     
     //TODO: Need to add a way to save the sync status when app is backgrounded. This will probably be in the scene delegate
