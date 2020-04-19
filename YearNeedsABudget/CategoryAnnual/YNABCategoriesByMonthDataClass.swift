@@ -19,7 +19,7 @@ struct CategoriesByMonthDataClass: Codable {
 }
 
 struct DataClass: Codable {
-    let month: MonthlySummary
+    let month: MonthlyBudgetSummary
 
     enum CodingKeys: String, CodingKey {
         case month = "month"
@@ -27,7 +27,7 @@ struct DataClass: Codable {
 }
 
 // MARK: - Month
-struct MonthlySummary: Codable {
+struct MonthlyBudgetSummary: Codable {
     let month: String
     let note: String?
     let income: Int

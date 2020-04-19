@@ -53,7 +53,7 @@ extension CategoriesViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        cell.textLabel?.text = viewModel.categories[indexPath.row].name
+        cell.textLabel?.text = "\(viewModel.categories[indexPath.row].name): \(viewModel.categories[indexPath.row].activity)"
         return cell
     }
 }

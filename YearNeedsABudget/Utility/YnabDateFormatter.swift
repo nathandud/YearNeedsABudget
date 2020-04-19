@@ -33,6 +33,16 @@ class YnabDateFormatter {
         return nil
     }
     
+    func getMonthNumber(from day: String) -> Int? {
+        if let date = dayFormatter.date(from: day) {
+            return Calendar.current.component(.month, from: date)
+        } else if let date = timeFormatter.date(from: day) {
+            return Calendar.current.component(.month, from: date)
+        } else {
+            return nil
+        }
+    }
+    
     func getTimestamp(_ date: Date = Date()) -> String {
         return timeFormatter.string(from: date)
     }

@@ -11,7 +11,7 @@ import Foundation
 class CategoryViewModel: Observer {
     
     var uuid: UUID
-    var categories: [Category] = []
+    var categories: [CategoryAnnualSummary] = []
     private let repository: CategoryRepository
     private var onDataRefresh: ((Bool) -> Void)?
     

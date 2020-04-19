@@ -8,17 +8,54 @@
 
 import Foundation
 
-
+enum CompletionStatus {
+    case inProgress
+    case complete
+    case error
+}
 
 class CategoryRepository {
     
-    private var latestCategories: [Category] = []
-    private var observers = [UUID: (Bool) -> Void]()
     var isStale = true
+    private var latestCategories: [CategoryAnnualSummary] = []
+    private var monthlySummaries: [Int: MonthlyBudgetSummary] = [:]
+    private var currentMonth = Calendar.current.component(.month, from: Date())
+    private var error: String? = nil
+    private var observers = [UUID: (Bool) -> Void]()
     
     init() { }
     
-    func getMonthsNeedingRefresh() -> [Int] {
+    func getLatestCategories() -> [CategoryAnnualSummary] {
+        if isStale || latestCategories.isEmpty {
+            latestCategories.removeAll()
+            fetchLatestAnnualCategoryData()
+        }
+        return latestCategories
+    }
+    
+    private func fetchLatestAnnualCategoryData() {
+        self.error = nil
+        for month in 1...currentMonth {
+            guard error == nil else { break }
+            fetchMonthlySummary(for: month) { error in
+                guard error == nil else {
+                    self.isStale = true
+                    self.broadcastCompletion(with: false)
+                    return
+                }
+                guard self.isUpdateComplete() else { return }
+                self.latestCategories = CategoryAggregator.aggregate(monthlyBudgetSummaries: Array(self.monthlySummaries.values))
+                self.isStale = false
+                self.broadcastCompletion(with: true)
+            }
+        }
+    }
+    
+    private func isUpdateComplete() -> Bool {
+        return monthlySummaries.count == currentMonth && error == nil
+    }
+    
+    private func getMonthsNeedingRefresh() -> [Int] {
         guard let syncStatus = SyncStatusService.fetchYearlySyncSummary() else { return [] }
         return syncStatus.monthlyStatuses.compactMap { (monthStatus) -> Int? in
             guard monthStatus.status != .upToDate else { return nil }
@@ -26,20 +63,15 @@ class CategoryRepository {
         }
     }
     
-    //TODO: Need to add a way to save the sync status when app is backgrounded. This will probably be in the scene delegate
-    
-    func getLatestCategories() -> [Category] {
-        if isStale || latestCategories.isEmpty {
-            CategoryApiService.fetchMonthlySummary(month: 1 /* Change this out */) { (montlySummary, error) in
-                guard error == nil else { return self.broadcastCompletion(with: false) }
-                if let categories = montlySummary?.categories {
-                    self.latestCategories = categories //Obviously need to change this later
-                    self.isStale = false
-                    self.broadcastCompletion(with: true)
-                }
+    private func fetchMonthlySummary(for month: Int, _ completion: ((String?) -> Void)? = nil) {
+        CategoryApiService.fetchMonthlySummary(month: month) { (monthlySummary, error) in
+            guard error == nil else {
+                self.error = error
+                return
             }
+            self.monthlySummaries[month] = monthlySummary
+            completion?(error)
         }
-        return latestCategories
     }
     
     private func broadcastCompletion(with success: Bool) {
