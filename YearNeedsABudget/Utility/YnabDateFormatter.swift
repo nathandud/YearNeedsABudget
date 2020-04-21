@@ -8,7 +8,7 @@
 
 import Foundation
 
-class YnabDateFormatter {
+struct YnabDateFormatter {
     
     static let shared = YnabDateFormatter()
     
@@ -26,7 +26,7 @@ class YnabDateFormatter {
     }
     
     func getFirstDayOfMonth(_ month: Int, year: Int? = nil) -> String? {
-        let calendarYear = year ?? Calendar.current.component(.year, from: Date())
+        let calendarYear = year ?? YnabCalendar.currentYear
         if let firstDay = Calendar.current.date(from: DateComponents(year: calendarYear, month: month, day: 1)) {
             return dayFormatter.string(from: firstDay)
         }
@@ -43,11 +43,29 @@ class YnabDateFormatter {
         }
     }
     
+    func getYear(from day: String) -> Int? {
+       if let date = dayFormatter.date(from: day) {
+           return Calendar.current.component(.year, from: date)
+       } else if let date = timeFormatter.date(from: day) {
+           return Calendar.current.component(.year, from: date)
+       } else {
+           return nil
+       }
+}
+    
     func getTimestamp(_ date: Date = Date()) -> String {
         return timeFormatter.string(from: date)
     }
     
     func getDate(timestamp: String) -> Date? {
         return timeFormatter.date(from: timestamp)
+    }
+}
+
+struct YnabCalendar {
+    static let currentMonth = Calendar.current.component(.month, from: Date())
+    static let currentYear = Calendar.current.component(.year, from: Date())
+    static func monthCount(for year: Int) -> Int {
+        return year == YnabCalendar.currentYear ? YnabCalendar.currentMonth : 12
     }
 }

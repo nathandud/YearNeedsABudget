@@ -57,7 +57,7 @@ struct CategoryAggregator {
         let groupedMonthlySummaries = Dictionary(grouping: categoryMonthlySummaries, by: { $0.categoryId })
         
         return groupedMonthlySummaries.compactMap { (categorySummaries) -> CategoryAnnualSummary? in
-            guard let firstSummary = Array(categorySummaries.value).first else { return nil }
+            guard let firstSummary = Array(categorySummaries.value).last else { return nil }
             return CategoryAnnualSummary(categoryId: categorySummaries.key, categoryGroupId: firstSummary.categoryGroupId, name: firstSummary.name, months: categorySummaries.value)
         }
     }

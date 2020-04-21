@@ -12,13 +12,14 @@ import os.log
 struct SyncStatusService {
     
     //MARK: - Public
-    static func fetchYearlySyncSummary(for year: Int = currentYear) -> YearlySyncSummary? {
+    static func getYearlySyncSummary(for year: Int = YnabCalendar.currentYear) -> YearlySyncSummary? {
         do {
             let json = try Data(contentsOf: getFileUrl(year))
-            let syncProgress = try JSONDecoder().decode([YearlySyncSummary].self, from: json)
-            return syncProgress.first { $0.year == year }
+            let syncSummary = try JSONDecoder().decode(YearlySyncSummary.self, from: json)
+            os_log("Fetched sync status file for %{PUBLIC}@", log: .filesystem, type: .info, "\(year)")
+            return syncSummary
         } catch {
-            os_log("Failed to fetch sync progress year for %{PUBLIC}@: %{PUBLIC}@", log: .repository, type: .error, "\(year)", error.localizedDescription)
+            os_log("Failed to fetch sync progress year for %{PUBLIC}@: %{PUBLIC}@", log: .filesystem, type: .error, "\(year)", error.localizedDescription)
             return nil
         }
     }
@@ -27,61 +28,45 @@ struct SyncStatusService {
         do {
             let jsonData = try JSONEncoder().encode(syncYear)
             try jsonData.write(to: getFileUrl(syncYear.year), options: [.completeFileProtection, .atomic])
+            os_log("Saved sync status file for %{PUBLIC}@", log: .filesystem, type: .info, "\(syncYear.year)")
         } catch {
-            os_log("Failed to save sync status file: %{PUBLIC}@", log: .repository, type: .error, error.localizedDescription)
+            os_log("Failed to save sync status file: %{PUBLIC}@", log: .filesystem, type: .error, error.localizedDescription)
         }
     }
     
-    static func updateSyncProgressFile(year: Int = currentYear, fullReset: Bool = false) {
-        guard let currentSyncStatus = fetchYearlySyncSummary(for: year), !fullReset else {
+    static func updateSyncProgressFile(year: Int = YnabCalendar.currentYear, fullReset: Bool = false) {
+        guard let currentSyncStatus = getYearlySyncSummary(for: year), !fullReset else {
             createNewSyncProgressFile()
             return
         }
         
         var monthlyStatuses: [MonthSyncStatus] = []
-        let monthCount = year == currentYear ? Calendar.current.component(.month, from: Date()) : 12
         
-        for month in 1...monthCount {
+        for month in 1...YnabCalendar.monthCount(for: year) {
             guard let syncMonth = currentSyncStatus.monthlyStatuses.first(where: { $0.month == month }), isUpToDate(syncMonth: syncMonth) else {
                 monthlyStatuses.append(MonthSyncStatus(month))
                 return
             }
             monthlyStatuses.append(syncMonth)
         }
-        
         saveYearlySyncSummary(YearlySyncSummary(year, monthlyStatuses: monthlyStatuses))
     }
     
     //MARK: - Private
-    private static let currentYear = Calendar.current.component(.year, from: Date())
-    private static let currentMonth = Calendar.current.component(.month, from: Date())
 
-    private static func getFileUrl(_ year: Int = currentYear) -> URL {
+    private static func getFileUrl(_ year: Int = YnabCalendar.currentYear) -> URL {
         return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("sync_progress_\(year).json")
     }
     
-    private static func fileExists(for year: Int = currentYear) -> Bool {
-        do {
-            let _ = try Data(contentsOf: getFileUrl(year))
-            return true
-        } catch {
-            return false
-        }
-    }
-    
     private static func createNewSyncProgressFile() {
-        let currentYear = Calendar.current.component(.year, from: Date())
-        let currentMonth = Calendar.current.component(.month, from: Date())
         var syncMonths: [MonthSyncStatus] = []
-        
-        for month in 1...currentMonth {
-            let monthStatus = MonthSyncStatus(month)
+        for month in 1...YnabCalendar.currentMonth {
+            let monthStatus = MonthSyncStatus(month, lastSyncTime: nil)
             syncMonths.append(monthStatus)
         }
-        let yearlySummary = YearlySyncSummary(currentYear, monthlyStatuses: syncMonths)
+        let yearlySummary = YearlySyncSummary(YnabCalendar.currentYear, monthlyStatuses: syncMonths)
+        os_log("Initiating new sync status file for %{PUBLIC}@", log: .filesystem, type: .info, "\(yearlySummary.year)")
         saveYearlySyncSummary(yearlySummary)
-        
-        if fileExists() { os_log("Successfully initiated new sync status file for %{PUBLIC}@", log: .repository, type: .info, "\(yearlySummary.year)") }
     }
     
     private static let tenMinutes: TimeInterval = 60 * 10
@@ -90,7 +75,7 @@ struct SyncStatusService {
     
     private static func isUpToDate(syncMonth: MonthSyncStatus) -> Bool {
         guard let lastSync = syncMonth.lastSyncTime else { return false }
-        let monthsAgo = currentMonth - syncMonth.month
+        let monthsAgo = YnabCalendar.currentMonth - syncMonth.month
         
         switch monthsAgo {
         case 0:

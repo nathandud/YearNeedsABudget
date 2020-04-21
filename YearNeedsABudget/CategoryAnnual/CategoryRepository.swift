@@ -19,11 +19,16 @@ class CategoryRepository {
     var isStale = true
     private var latestCategories: [CategoryAnnualSummary] = []
     private var monthlySummaries: [Int: MonthlyBudgetSummary] = [:]
-    private var currentMonth = Calendar.current.component(.month, from: Date())
+    private var monthSyncStatuses: [MonthSyncStatus] = []
+    
     private var error: String? = nil
     private var observers = [UUID: (Bool) -> Void]()
     
-    init() { }
+    init() {
+        //TODO: Pickup here
+//        monthlySummaries = CategoryFileService.getMonthlyBudgetSummaries(for: YnabCalendar.currentYear)
+//        latestCategories = CategoryAggregator.aggregate(monthlyBudgetSummaries: Array(monthlySummaries.values))
+    }
     
     func getLatestCategories() -> [CategoryAnnualSummary] {
         if isStale || latestCategories.isEmpty {
@@ -33,30 +38,30 @@ class CategoryRepository {
         return latestCategories
     }
     
-    private func fetchLatestAnnualCategoryData() {
+    private func fetchLatestAnnualCategoryData(for year: Int = YnabCalendar.currentYear) {
         self.error = nil
-        for month in 1...currentMonth {
+        let months = getMonthsNeedingRefresh()
+        for month in months {
             guard error == nil else { break }
             fetchMonthlySummary(for: month) { error in
-                guard error == nil else {
-                    self.isStale = true
+                guard self.isUpdateComplete(monthsRequested: months.count) else { return }
+                
+                self.error = error
+                SyncStatusService.saveYearlySyncSummary(YearlySyncSummary(year, monthlyStatuses: self.monthSyncStatuses))
+                
+                if error != nil {
                     self.broadcastCompletion(with: false)
-                    return
+                } else {
+                    self.latestCategories = CategoryAggregator.aggregate(monthlyBudgetSummaries: Array(self.monthlySummaries.values))
+                    self.isStale = false
+                    self.broadcastCompletion(with: true)
                 }
-                guard self.isUpdateComplete() else { return }
-                self.latestCategories = CategoryAggregator.aggregate(monthlyBudgetSummaries: Array(self.monthlySummaries.values))
-                self.isStale = false
-                self.broadcastCompletion(with: true)
             }
         }
     }
     
-    private func isUpdateComplete() -> Bool {
-        return monthlySummaries.count == currentMonth && error == nil
-    }
-    
     private func getMonthsNeedingRefresh() -> [Int] {
-        guard let syncStatus = SyncStatusService.fetchYearlySyncSummary() else { return [] }
+        guard let syncStatus = SyncStatusService.getYearlySyncSummary() else { return [] }
         return syncStatus.monthlyStatuses.compactMap { (monthStatus) -> Int? in
             guard monthStatus.status != .upToDate else { return nil }
             return monthStatus.month
@@ -64,14 +69,21 @@ class CategoryRepository {
     }
     
     private func fetchMonthlySummary(for month: Int, _ completion: ((String?) -> Void)? = nil) {
+        var syncStatus = SyncStatus.inProgress
         CategoryApiService.fetchMonthlySummary(month: month) { (monthlySummary, error) in
-            guard error == nil else {
-                self.error = error
-                return
+            if error != nil {
+                syncStatus = .failed
+            } else {
+                syncStatus = .upToDate
+                self.monthlySummaries[month] = monthlySummary
             }
-            self.monthlySummaries[month] = monthlySummary
+            self.monthSyncStatuses.append(MonthSyncStatus(month, status: syncStatus))
             completion?(error)
         }
+    }
+    
+    private func isUpdateComplete(monthsRequested: Int) -> Bool {
+        return monthlySummaries.count == monthsRequested || error != nil
     }
     
     private func broadcastCompletion(with success: Bool) {

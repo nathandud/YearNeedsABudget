@@ -9,9 +9,10 @@
 import Foundation
 
 enum SyncStatus: Int {
-    case upToDate = 0
-    case inProgress = 1
-    case outOfDate = 2
+    case outOfDate = 0
+    case upToDate = 1
+    case inProgress = 2
+    case failed = 3
 }
 
 struct YearlySyncSummary: Codable {
@@ -34,7 +35,7 @@ struct MonthSyncStatus: Codable {
     let month: Int
     let lastSyncTime: Date?
     
-    init(_ month: Int, status: SyncStatus = .outOfDate, lastSyncTime: Date? = nil) {
+    init(_ month: Int, status: SyncStatus = .outOfDate, lastSyncTime: Date? = Date()) {
         self.status = status
         self.month = month
         self.lastSyncTime = lastSyncTime
@@ -42,12 +43,16 @@ struct MonthSyncStatus: Codable {
     
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        
         let statusInt = try values.decode(Int.self, forKey: .status)
-        let timestamp = try values.decode(String.self, forKey: .lastSyncTime)
+        let timestamp = try values.decode(String?.self, forKey: .lastSyncTime)
+        
         month = try values.decode(Int.self, forKey: .month)
         status = SyncStatus(rawValue: statusInt) ?? .outOfDate
-        lastSyncTime = YnabDateFormatter.shared.getDate(timestamp: timestamp)
+        if let lastUpdated = timestamp, let lastUpdatedDate = YnabDateFormatter.shared.getDate(timestamp: lastUpdated) {
+            lastSyncTime = lastUpdatedDate
+        } else {
+            lastSyncTime = nil
+        }
     }
     
     func encode(to encoder: Encoder) throws {
