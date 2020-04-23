@@ -34,6 +34,13 @@ struct SyncStatusService {
         }
     }
     
+    static func getRefreshedSyncStatus(for months: [MonthSyncStatus]) -> [MonthSyncStatus] {
+        return months.map { (monthStatus) -> MonthSyncStatus in
+            let status = getRefreshedStatus(syncMonth: monthStatus)
+            return MonthSyncStatus(monthStatus.month, status: status, lastSyncTime: monthStatus.lastSyncTime)
+        }
+    }
+    
     static func updateSyncProgressFile(year: Int = YnabCalendar.currentYear, fullReset: Bool = false) {
         guard let currentSyncStatus = getYearlySyncSummary(for: year), !fullReset else {
             createNewSyncProgressFile()
@@ -43,7 +50,7 @@ struct SyncStatusService {
         var monthlyStatuses: [MonthSyncStatus] = []
         
         for month in 1...YnabCalendar.monthCount(for: year) {
-            guard let syncMonth = currentSyncStatus.monthlyStatuses.first(where: { $0.month == month }), isUpToDate(syncMonth: syncMonth) else {
+            guard let syncMonth = currentSyncStatus.monthlyStatuses.first(where: { $0.month == month }), getRefreshedStatus(syncMonth: syncMonth) == .upToDate else {
                 monthlyStatuses.append(MonthSyncStatus(month))
                 return
             }
@@ -73,19 +80,19 @@ struct SyncStatusService {
     private static let oneDay: TimeInterval = 60 * 60 * 24
     private static let oneWeek: TimeInterval = 60 * 60 * 24 * 7
     
-    private static func isUpToDate(syncMonth: MonthSyncStatus) -> Bool {
-        guard let lastSync = syncMonth.lastSyncTime else { return false }
+    private static func getRefreshedStatus(syncMonth: MonthSyncStatus) -> SyncStatus {
+        guard let lastSync = syncMonth.lastSyncTime, syncMonth.status == .upToDate else { return syncMonth.status }
         let monthsAgo = YnabCalendar.currentMonth - syncMonth.month
         
         switch monthsAgo {
         case 0:
-            return Calendar.current.compare(Date().addingTimeInterval(tenMinutes), to: lastSync, toGranularity: .minute) == .orderedAscending
+            return Calendar.current.compare(Date().addingTimeInterval(tenMinutes), to: lastSync, toGranularity: .minute) == .orderedAscending ? .upToDate : .outOfDate
         case 1:
-            return Calendar.current.compare(Date().addingTimeInterval(oneDay), to: lastSync, toGranularity: .minute) == .orderedAscending
+            return Calendar.current.compare(Date().addingTimeInterval(oneDay), to: lastSync, toGranularity: .minute) == .orderedAscending ? .upToDate : .outOfDate
         case 2:
-            return Calendar.current.compare(Date().addingTimeInterval(oneDay * 3), to: lastSync, toGranularity: .minute) == .orderedAscending
+            return Calendar.current.compare(Date().addingTimeInterval(oneDay * 3), to: lastSync, toGranularity: .minute) == .orderedAscending ? .upToDate : .outOfDate
         default:
-            return Calendar.current.compare(Date().addingTimeInterval(oneWeek), to: lastSync, toGranularity: .minute) == .orderedAscending
+            return Calendar.current.compare(Date().addingTimeInterval(oneWeek), to: lastSync, toGranularity: .minute) == .orderedAscending ? .upToDate : .outOfDate
         }
     }
 }
