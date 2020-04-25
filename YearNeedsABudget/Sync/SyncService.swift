@@ -11,6 +11,9 @@ import os.log
 
 struct SyncService {
     
+    //MARK: - TODO
+    //Need to add code to clear out this folder in case I change the schema between uprades.
+    
     //MARK: - Public
     static func getYearlySyncSummary(for year: Int = YnabCalendar.currentYear) -> YearlySyncSummary? {
         do {
@@ -40,23 +43,23 @@ struct SyncService {
             return
         }
         
-        let monthlySummaries = Array(1...YnabCalendar.monthCount(for: year)).map { (month) -> MonthlySyncSummary in
-            if let existingSummary = yearlySyncSummary.monthlySummaries.first(where: { $0.month == month }) {
+        let monthlySummaries = Array(1...YnabCalendar.monthCount(for: year)).map { (month) -> MonthlySyncReport in
+            if let existingSummary = yearlySyncSummary.monthlyReports.first(where: { $0.month == month }) {
                 let updatedSyncStatus = getUpdatedSyncStatus(for: existingSummary)
                 let lastSync = existingSummary.lastSyncTime
-                return MonthlySyncSummary(month, status: updatedSyncStatus, lastSyncTime: lastSync)
+                return MonthlySyncReport(month, status: updatedSyncStatus, lastSyncTime: lastSync)
             }
-            return MonthlySyncSummary(month)
+            return MonthlySyncReport(month)
         }
         
         saveYearlySyncSummary(YearlySyncSummary(year, monthlyStatuses: monthlySummaries))
     }
     
-    static func getUpdatedSyncStatus(for monthlySyncSummary: MonthlySyncSummary) -> SyncStatus {
-       if monthlySyncSummary.status == .upToDate {
-          return isStillUpToDate(monthlySyncSummary) ? .upToDate : .outOfDate
+    static func getUpdatedSyncStatus(for monthlySyncReport: MonthlySyncReport) -> SyncStatus {
+       if monthlySyncReport.status == .upToDate {
+          return isStillUpToDate(monthlySyncReport) ? .upToDate : .outOfDate
        }
-        return monthlySyncSummary.status
+        return monthlySyncReport.status
     }
     
     //MARK: - Private
@@ -66,9 +69,9 @@ struct SyncService {
     }
     
     private static func createNewSyncProgressFile() {
-        var syncMonths: [MonthlySyncSummary] = []
+        var syncMonths: [MonthlySyncReport] = []
         for month in 1...YnabCalendar.currentMonth {
-            let monthStatus = MonthlySyncSummary(month, lastSyncTime: nil)
+            let monthStatus = MonthlySyncReport(month, lastSyncTime: nil)
             syncMonths.append(monthStatus)
         }
         let yearlySummary = YearlySyncSummary(YnabCalendar.currentYear, monthlyStatuses: syncMonths)
@@ -80,7 +83,7 @@ struct SyncService {
     private static let oneDay: TimeInterval = 60 * 60 * 24
     private static let oneWeek: TimeInterval = 60 * 60 * 24 * 7
     
-    private static func isStillUpToDate(_ syncMonth: MonthlySyncSummary) -> Bool {
+    private static func isStillUpToDate(_ syncMonth: MonthlySyncReport) -> Bool {
         guard let lastSync = syncMonth.lastSyncTime, syncMonth.status == .upToDate else { return false }
         let monthsAgo = YnabCalendar.currentMonth - syncMonth.month
         

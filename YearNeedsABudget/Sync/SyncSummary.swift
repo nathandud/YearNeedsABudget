@@ -10,20 +10,20 @@ import Foundation
 
 struct YearlySyncSummary: Codable {
     let year: Int
-    let monthlySummaries: [MonthlySyncSummary]
+    let monthlyReports: [MonthlySyncReport]
     
-    init(_ year: Int, monthlyStatuses: [MonthlySyncSummary] = []) {
+    init(_ year: Int, monthlyStatuses: [MonthlySyncReport] = []) {
         self.year = year
-        self.monthlySummaries = monthlyStatuses
+        self.monthlyReports = monthlyStatuses
     }
     
     enum CodingKeys: String, CodingKey {
         case year = "year"
-        case monthlySummaries = "sync_progress"
+        case monthlyReports = "sync"
     }
 }
 
-struct MonthlySyncSummary: Codable {
+struct MonthlySyncReport: Codable {
     let status: SyncStatus
     let month: Int
     let lastSyncTime: Date?
