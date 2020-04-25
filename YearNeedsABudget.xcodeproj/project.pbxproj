@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C6609B2F2406101C00D9BA7F /* SyncStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6609B2E2406101C00D9BA7F /* SyncStatus.swift */; };
-		C6609B322415DF8500D9BA7F /* SyncStatusService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6609B312415DF8500D9BA7F /* SyncStatusService.swift */; };
+		C6609B322415DF8500D9BA7F /* SyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6609B312415DF8500D9BA7F /* SyncService.swift */; };
 		C676696923F3C628003AE8FC /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676696823F3C627003AE8FC /* ProgressBarView.swift */; };
 		C676696D23FCFE4A003AE8FC /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676696C23FCFE4A003AE8FC /* Networking.swift */; };
 		C676696F23FD0077003AE8FC /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676696E23FD0077003AE8FC /* Logging.swift */; };
@@ -19,6 +19,7 @@
 		C676697B2404D687003AE8FC /* ObservationProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676697A2404D687003AE8FC /* ObservationProtocols.swift */; };
 		C676697D2404D898003AE8FC /* YNABCategoriesByMonthDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676697C2404D898003AE8FC /* YNABCategoriesByMonthDataClass.swift */; };
 		C676697F2404DDF8003AE8FC /* CategoryAnnualSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676697E2404DDF8003AE8FC /* CategoryAnnualSummary.swift */; };
+		C6C18FBB245401090001AD54 /* SyncSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C18FBA245401090001AD54 /* SyncSummary.swift */; };
 		C6E6C520244EB07400B8C611 /* CategoryFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E6C51F244EB07400B8C611 /* CategoryFileService.swift */; };
 		C6F7F21923F1129E002FFC75 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7F21823F1129E002FFC75 /* AppDelegate.swift */; };
 		C6F7F21B23F1129E002FFC75 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7F21A23F1129E002FFC75 /* SceneDelegate.swift */; };
@@ -44,7 +45,7 @@
 
 /* Begin PBXFileReference section */
 		C6609B2E2406101C00D9BA7F /* SyncStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncStatus.swift; sourceTree = "<group>"; };
-		C6609B312415DF8500D9BA7F /* SyncStatusService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncStatusService.swift; sourceTree = "<group>"; };
+		C6609B312415DF8500D9BA7F /* SyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncService.swift; sourceTree = "<group>"; };
 		C676696823F3C627003AE8FC /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
 		C676696C23FCFE4A003AE8FC /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		C676696E23FD0077003AE8FC /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
@@ -55,6 +56,7 @@
 		C676697A2404D687003AE8FC /* ObservationProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservationProtocols.swift; sourceTree = "<group>"; };
 		C676697C2404D898003AE8FC /* YNABCategoriesByMonthDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YNABCategoriesByMonthDataClass.swift; sourceTree = "<group>"; };
 		C676697E2404DDF8003AE8FC /* CategoryAnnualSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryAnnualSummary.swift; sourceTree = "<group>"; };
+		C6C18FBA245401090001AD54 /* SyncSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncSummary.swift; sourceTree = "<group>"; };
 		C6E6C51F244EB07400B8C611 /* CategoryFileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryFileService.swift; sourceTree = "<group>"; };
 		C6F7F21523F1129E002FFC75 /* YearNeedsABudget.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YearNeedsABudget.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6F7F21823F1129E002FFC75 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -94,7 +96,8 @@
 			isa = PBXGroup;
 			children = (
 				C6609B2E2406101C00D9BA7F /* SyncStatus.swift */,
-				C6609B312415DF8500D9BA7F /* SyncStatusService.swift */,
+				C6609B312415DF8500D9BA7F /* SyncService.swift */,
+				C6C18FBA245401090001AD54 /* SyncSummary.swift */,
 			);
 			path = Sync;
 			sourceTree = "<group>";
@@ -291,7 +294,8 @@
 				C67669792403A5FA003AE8FC /* Coordinator.swift in Sources */,
 				C6F7F24523F12FA6002FFC75 /* MockData.swift in Sources */,
 				C676697B2404D687003AE8FC /* ObservationProtocols.swift in Sources */,
-				C6609B322415DF8500D9BA7F /* SyncStatusService.swift in Sources */,
+				C6C18FBB245401090001AD54 /* SyncSummary.swift in Sources */,
+				C6609B322415DF8500D9BA7F /* SyncService.swift in Sources */,
 				C676697123FD04A7003AE8FC /* CategoryRepository.swift in Sources */,
 				C67669772403A4F3003AE8FC /* Scratch.swift in Sources */,
 				C676697F2404DDF8003AE8FC /* CategoryAnnualSummary.swift in Sources */,

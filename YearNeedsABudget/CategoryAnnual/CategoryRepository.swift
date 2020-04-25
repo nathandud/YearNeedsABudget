@@ -18,7 +18,7 @@ class CategoryRepository {
     
     
     private var latestCategories: [CategoryAnnualSummary]
-    private var monthSyncStatuses: [MonthSyncStatus]
+    private var monthlySyncSummaries: [MonthlySyncSummary]
     private var fetchedMonthlySummaries: [MonthlyBudgetSummary]
     private var cachedMonthlySummaries: [MonthlyBudgetSummary]
     
@@ -28,7 +28,7 @@ class CategoryRepository {
     init() {
         fetchedMonthlySummaries = []
         cachedMonthlySummaries = CategoryFileService.getMonthlyBudgetSummaries(for: YnabCalendar.currentYear)
-        monthSyncStatuses = SyncStatusService.getYearlySyncSummary(for: YnabCalendar.currentYear)?.monthlyStatuses ?? []
+        monthlySyncSummaries = SyncService.getYearlySyncSummary(for: YnabCalendar.currentYear)?.monthlySummaries ?? []
         latestCategories = CategoryAggregator.aggregate(monthlyBudgetSummaries: cachedMonthlySummaries)
     }
     
@@ -42,10 +42,8 @@ class CategoryRepository {
     }
     
     private func getMonthsNeedingRefresh(for year: Int = YnabCalendar.currentYear) -> [Int] {
-        monthSyncStatuses = SyncStatusService.getRefreshedSyncStatus(for: monthSyncStatuses)
-        return monthSyncStatuses.compactMap { (monthStatus) -> Int? in
-            guard monthStatus.status != .upToDate else { return nil }
-            return monthStatus.month
+        return monthlySyncSummaries.compactMap { (monthlySyncSummary) -> Int? in
+            return SyncService.getUpdatedSyncStatus(for: monthlySyncSummary) != .upToDate ? monthlySyncSummary.month : nil
         }
     }
     
@@ -67,15 +65,13 @@ class CategoryRepository {
     }
     
     private func fetchMonthlySummary(for month: Int, _ completion: ((String?) -> Void)? = nil) {
-        var syncStatus = SyncStatus.inProgress
         CategoryApiService.fetchMonthlySummary(month: month) { (monthlySummary, error) in
+            var syncStatus: SyncStatus = .failed
             if let summary = monthlySummary, error == nil {
-                syncStatus = .upToDate
                 self.fetchedMonthlySummaries.append(summary)
-            } else {
-                syncStatus = .failed
+                syncStatus = .upToDate
             }
-            self.monthSyncStatuses.append(MonthSyncStatus(month, status: syncStatus))
+            self.monthlySyncSummaries.append(MonthlySyncSummary(month, status: syncStatus))
             completion?(error)
         }
     }
@@ -85,7 +81,7 @@ class CategoryRepository {
     }
     
     private func runCompletion(for year: Int, error: String? = nil) {
-        SyncStatusService.saveYearlySyncSummary(YearlySyncSummary(year, monthlyStatuses: self.monthSyncStatuses))
+        SyncService.saveYearlySyncSummary(YearlySyncSummary(year, monthlyStatuses: self.monthlySyncSummaries))
         fetchedMonthlySummaries.removeAll()
         
         if error != nil {

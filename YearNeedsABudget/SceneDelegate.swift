@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let navController = UINavigationController()
-        SyncStatusService.updateSyncProgressFile()
+        SyncService.updateSyncProgressFile()
         coordinator = Coordinator(navigationController: navController)
         
         let window = UIWindow(windowScene: windowScene)
