@@ -9,7 +9,8 @@
 
 import Foundation
 
-//This class represents the top-level object returned from the Categories Endpoint
+
+/** This struct represents the top-level object returned from the YNAB Categories Endpoint. **/
 struct CategoriesByMonthDataClass: Codable {
     let data: DataClass
 

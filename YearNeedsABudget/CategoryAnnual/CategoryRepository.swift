@@ -8,31 +8,29 @@
 
 import Foundation
 
-enum CompletionStatus {
-    case inProgress
-    case complete
-    case error
-}
-
 class CategoryRepository {
-    
     
     private var latestCategories: [CategoryAnnualSummary]
     private var monthlySyncReports: [MonthlySyncReport]
     private var fetchedMonthlySummaries: [MonthlyBudgetSummary]
     private var cachedMonthlySummaries: [MonthlyBudgetSummary]
     
+    private let budgetSummaryAccessQueue = DispatchQueue.init(label: "categoryRepo.monthlySummaryAccessQueue", attributes: .concurrent)
+    private let syncReportAccessQueue = DispatchQueue.init(label: "categoryRepo.syncReportAccessQueue", attributes: .concurrent)
+    
     private var error: String? = nil
     private var observers = [UUID: (Bool) -> Void]()
     
     init() {
         fetchedMonthlySummaries = []
-        cachedMonthlySummaries = CategoryFileService.getMonthlyBudgetSummaries(for: YnabCalendar.currentYear)
-        monthlySyncReports = SyncService.getYearlySyncSummary(for: YnabCalendar.currentYear)?.monthlyReports ?? []
+        cachedMonthlySummaries = CategoryFileService.getMonthlyBudgetSummaries(for: YnabDateComponents.currentYear)
+        monthlySyncReports = SyncService.getYearlySyncSummary(for: YnabDateComponents.currentYear)?.monthlyReports ?? []
         latestCategories = CategoryAggregator.aggregate(monthlyBudgetSummaries: cachedMonthlySummaries)
     }
     
-    func getLatestCategories(for year: Int = YnabCalendar.currentYear) -> [CategoryAnnualSummary] {
+    //MARK: - Public
+    
+    func getLatestCategories(for year: Int = YnabDateComponents.currentYear) -> [CategoryAnnualSummary] {
         let staleMonths = getMonthsNeedingRefresh(for: year)
         if !staleMonths.isEmpty || latestCategories.isEmpty {
             latestCategories.removeAll()
@@ -41,24 +39,26 @@ class CategoryRepository {
         return latestCategories
     }
     
-    private func getMonthsNeedingRefresh(for year: Int = YnabCalendar.currentYear) -> [Int] {
+    //MARK: - Private
+    
+    private func getMonthsNeedingRefresh(for year: Int = YnabDateComponents.currentYear) -> [Int] {
         return monthlySyncReports.compactMap { (monthlySyncReport) -> Int? in
             return SyncService.getUpdatedSyncStatus(for: monthlySyncReport) != .upToDate ? monthlySyncReport.month : nil
         }
     }
     
-    private func fetchLatestAnnualCategoryData(for year: Int = YnabCalendar.currentYear, staleMonths: [Int] = []) {
+    private func fetchLatestAnnualCategoryData(for year: Int = YnabDateComponents.currentYear, staleMonths: [Int] = []) {
         self.error = nil
         for month in staleMonths {
             guard error == nil else {
-                runCompletion(for: year, error: error)
+                runFetchCompletion(for: year, error: error)
                 return
             }
             
             fetchMonthlySummary(for: month) { error in
                 self.error = error
                 if self.isUpdateComplete(requestCount: staleMonths.count) {
-                    self.runCompletion(for: year, error: error)
+                    self.runFetchCompletion(for: year, error: error)
                 }
             }
         }
@@ -66,13 +66,29 @@ class CategoryRepository {
     
     private func fetchMonthlySummary(for month: Int, _ completion: ((String?) -> Void)? = nil) {
         CategoryApiService.fetchMonthlySummary(month: month) { (monthlySummary, error) in
-            var syncStatus: SyncStatus = .failed
+            var syncStatus: SyncStatus
             if let summary = monthlySummary, error == nil {
-                self.fetchedMonthlySummaries.append(summary)
+                self.addMonthlyBudgetSummary(summary)
                 syncStatus = .upToDate
+            } else {
+                syncStatus = .failed
             }
-            self.monthlySyncReports.append(MonthlySyncReport(month, status: syncStatus))
+            
+            self.updateMonthlySyncReport(for: month, syncStatus: syncStatus)
             completion?(error)
+        }
+    }
+    
+    private func addMonthlyBudgetSummary(_ monthlySummary: MonthlyBudgetSummary) {
+        budgetSummaryAccessQueue.sync(flags: .barrier) {
+            fetchedMonthlySummaries.append(monthlySummary)
+        }
+    }
+    
+    private func updateMonthlySyncReport(for month: Int, syncStatus: SyncStatus) {
+        syncReportAccessQueue.sync(flags: .barrier) {
+            monthlySyncReports.removeAll(where: { $0.month == month })
+            monthlySyncReports.append(MonthlySyncReport(month, status: syncStatus))
         }
     }
     
@@ -80,19 +96,28 @@ class CategoryRepository {
         return fetchedMonthlySummaries.count == requestCount || error != nil
     }
     
-    private func runCompletion(for year: Int, error: String? = nil) {
-        SyncService.saveYearlySyncSummary(YearlySyncSummary(year, monthlyStatuses: self.monthlySyncReports))
+    private func runFetchCompletion(for year: Int, error: String? = nil) {
+        SyncService.saveYearlySyncSummary(YearlySyncSummary(year, monthlyReports: monthlySyncReports))
+        
+        updateCachedBudgetSummaries(with: fetchedMonthlySummaries)
+        fetchedMonthlySummaries.removeAll()
         
         if error != nil {
-            fetchedMonthlySummaries.removeAll()
-            self.broadcastCompletion(with: false)
+            broadcastCompletion(with: false)
         } else {
-            let combinedSummaries = BudgetSummaryAggregator.combine(cached: self.cachedMonthlySummaries, fetched: self.fetchedMonthlySummaries)
-            self.latestCategories = CategoryAggregator.aggregate(monthlyBudgetSummaries: combinedSummaries)
-            CategoryFileService.saveMonthlyBudgetSummaries(self.cachedMonthlySummaries)
-            fetchedMonthlySummaries.removeAll()
-            self.broadcastCompletion(with: true)
+            latestCategories = CategoryAggregator.aggregate(monthlyBudgetSummaries: cachedMonthlySummaries)
+            broadcastCompletion(with: true)
         }
+    }
+    
+    private func updateCachedBudgetSummaries(with fetchedMonthlySummaries: [MonthlyBudgetSummary]) {
+        guard let monthString = fetchedMonthlySummaries.first?.month, let year = YnabDateFormatter.shared.getYear(from: monthString) else { return }
+        cachedMonthlySummaries = Array(1...YnabDateComponents.elapsedMonths(in: year)).compactMap { (monthNumber) -> MonthlyBudgetSummary? in
+            let fetchedSummary = fetchedMonthlySummaries.first { YnabDateFormatter.shared.getMonthNumber(from: $0.month) == monthNumber }
+            let cachedSummary = cachedMonthlySummaries.first { YnabDateFormatter.shared.getMonthNumber(from: $0.month) == monthNumber }
+            return fetchedSummary ?? cachedSummary
+        }
+        CategoryFileService.saveMonthlyBudgetSummaries(cachedMonthlySummaries)
     }
     
     private func broadcastCompletion(with result: Bool) {

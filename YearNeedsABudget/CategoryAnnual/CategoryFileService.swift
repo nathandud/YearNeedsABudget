@@ -12,51 +12,35 @@ import os.log
 struct CategoryFileService {
     
     static func saveMonthlyBudgetSummaries(_ monthlySummaries: [MonthlyBudgetSummary]) {
-        guard let month = monthlySummaries.first?.month else {
+        guard let monthString = monthlySummaries.first?.month, let year = YnabDateFormatter.shared.getYear(from: monthString) else {
             os_log("No monthly summaries to save", log: .filesystem, type: .info)
             return
         }
         
-        os_log("Saving monthly summaries for %{PUBLIC}@", log: .filesystem, type: .info, monthlySummaries.reduce("") { "\($0),\($1)" })
-        
         do {
             let jsonData = try JSONEncoder().encode(monthlySummaries)
-            try jsonData.write(to: getFileUrl(month), options: [.completeFileProtection, .atomic])
-            os_log("Saved monthly summaries file for %{PUBLIC}@", log: .filesystem, type: .info, month)
+            try jsonData.write(to: getFileUrl(year), options: [.completeFileProtection, .atomic])
+            os_log("Saved monthly summaries file for %{PUBLIC}@", log: .filesystem, type: .info, "\(year)")
         } catch {
-            os_log("Failed to save monthly summaries: %{PUBLIC}@", log: .filesystem, type: .error, error.localizedDescription)
+            os_log("Failed to save monthly summaries for %{PUBLIC}@: %{PUBLIC}@", log: .filesystem, type: .error, "\(year)", error.localizedDescription)
         }
     }
     
     static func getMonthlyBudgetSummaries(for year: Int) -> [MonthlyBudgetSummary] {
-        let fileEnumerator = FileManager.default.enumerator(at: getFolderUrl(for: year), includingPropertiesForKeys: nil)
-        let decoder = JSONDecoder()
-        
-        guard let urls = fileEnumerator?.allObjects as? [URL] else {
-            os_log("Failed to cast all directory objects to URLs", log: .filesystem, type: .error)
+        do {
+            let json = try Data(contentsOf: getFileUrl(year))
+            return try JSONDecoder().decode([MonthlyBudgetSummary].self, from: json)
+        } catch {
+            os_log("Failed to retrieve monthly summaries for %{PUBLIC}@: %{PUBLIC}@", log: .filesystem, type: .error, "\(year)", error.localizedDescription)
             return []
-        }
-        
-        return urls.compactMap {
-            do {
-                let json = try Data(contentsOf: $0)
-                return try decoder.decode(MonthlyBudgetSummary.self, from: json)
-            } catch {
-                return nil
-            }
         }
     }
 
-    private static func getFileUrl(_ month: String) -> URL {
-        let year = YnabDateFormatter.shared.getYear(from: month) ?? YnabCalendar.currentYear //TODO: This is failable, should make it failable
-        return getFolderUrl(for: year).appendingPathComponent("\(month).json")
+    private static func getFileUrl(_ year: Int) -> URL {
+        return getDocumentsDirectory().appendingPathComponent("bs-\(year).json")
     }
     
-    private static func getFolderUrl(for year: Int) -> URL {
-        return getUserDirectoryUrl().appendingPathComponent("\(year)", isDirectory: true)
-    }
-    
-    private static func getUserDirectoryUrl() -> URL {
+    private static func getDocumentsDirectory() -> URL {
          return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     }
 }

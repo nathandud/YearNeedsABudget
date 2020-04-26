@@ -66,9 +66,9 @@ struct CategoryAggregator {
 struct BudgetSummaryAggregator {
     static func combine(cached: [MonthlyBudgetSummary], fetched: [MonthlyBudgetSummary]) -> [MonthlyBudgetSummary] {
         guard let monthString = cached.first?.month ?? fetched.first?.month, let year = YnabDateFormatter.shared.getYear(from: monthString) else { return [] }
-        return Array(0...YnabCalendar.monthCount(for: year)).compactMap { (monthNumber) -> MonthlyBudgetSummary? in
-            let fetchedSummary = fetched.first { $0.month == monthString }
-            let cachedSummary = cached.first { $0.month == monthString }
+        return Array(1...YnabDateComponents.elapsedMonths(in: year)).compactMap { (monthNumber) -> MonthlyBudgetSummary? in
+            let fetchedSummary = fetched.first { YnabDateFormatter.shared.getMonthNumber(from: $0.month) == monthNumber }
+            let cachedSummary = cached.first { YnabDateFormatter.shared.getMonthNumber(from: $0.month) == monthNumber }
             return fetchedSummary ?? cachedSummary
         }
     }

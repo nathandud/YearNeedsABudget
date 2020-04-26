@@ -12,9 +12,9 @@ struct YearlySyncSummary: Codable {
     let year: Int
     let monthlyReports: [MonthlySyncReport]
     
-    init(_ year: Int, monthlyStatuses: [MonthlySyncReport] = []) {
+    init(_ year: Int, monthlyReports: [MonthlySyncReport] = []) {
         self.year = year
-        self.monthlyReports = monthlyStatuses
+        self.monthlyReports = monthlyReports
     }
     
     enum CodingKeys: String, CodingKey {
