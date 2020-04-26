@@ -21,7 +21,7 @@ struct CategoryApiService {
         Networking.sendRequest(httpMethod: .get, endpoint: endpoint, httpBody: nil, onCompletion: { response in
             do {
                 let categories = try JSONDecoder().decode(CategoriesByMonthDataClass.self, from: response)
-                os_log("Successfully returned data for %{PUBLIC}@ categories for %{PUBLIC}@", log: .networking, type: .info, "\(categories.data.month.categories?.count ?? 0)", monthString)
+                os_log("Successfully fetched data for %{PUBLIC}@ categories for %{PUBLIC}@", log: .networking, type: .info, "\(categories.data.month.categories?.count ?? 0)", monthString)
                 onCompletion(categories.data.month, nil)
             } catch {
                 os_log("Could not parse categories JSON response: %{PUBLIC}@", log: .networking, type: .error, error.localizedDescription)
