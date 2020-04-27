@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SnapKit
 
 class ProgressBarView: UIView {
     
@@ -22,12 +21,15 @@ class ProgressBarView: UIView {
         let bar = UIView()
         bar.backgroundColor = .lightGray
         bar.layer.cornerRadius = 10
+        
         addSubview(bar)
-        bar.snp.makeConstraints {
-            $0.height.equalTo(20)
-            $0.left.right.equalToSuperview().inset(20)
-            $0.centerY.equalToSuperview()
-        }
+        bar.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            bar.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20),
+            bar.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 20),
+            bar.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            bar.heightAnchor.constraint(equalToConstant: 20)
+        ])
         return bar
     }()
     
@@ -35,11 +37,15 @@ class ProgressBarView: UIView {
         let progress = UIView()
         progress.backgroundColor = .green
         progress.layer.cornerRadius = 10
+        
         addSubview(progress)
-        progress.snp.makeConstraints {
-            $0.left.top.height.equalTo(self.backgroundBar)
-            $0.width.equalTo(200)
-        }
+        progress.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            progress.leftAnchor.constraint(equalTo: backgroundBar.leftAnchor, constant: 230),
+            progress.topAnchor.constraint(equalTo: backgroundBar.topAnchor, constant: 230),
+            progress.heightAnchor.constraint(equalTo: backgroundBar.heightAnchor, constant: 230),
+            progress.widthAnchor.constraint(equalToConstant: 200)
+        ])
         return progress
     }()
     
@@ -47,13 +53,15 @@ class ProgressBarView: UIView {
         let marker = UIView()
         marker.backgroundColor = .black
         marker.layer.cornerRadius = 0.75
+        
         addSubview(marker)
-        marker.snp.makeConstraints {
-            $0.width.equalTo(1.5)
-            $0.height.equalTo(30)
-            $0.left.equalTo(self.backgroundBar).offset(230)
-            $0.centerY.equalTo(self.backgroundBar)
-        }
+        marker.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            marker.widthAnchor.constraint(equalToConstant: 1.5),
+            marker.heightAnchor.constraint(equalToConstant: 30),
+            marker.leftAnchor.constraint(equalTo: backgroundBar.leftAnchor, constant: 230),
+            marker.centerYAnchor.constraint(equalTo: backgroundBar.centerYAnchor)
+        ])
         return marker
     }()
     

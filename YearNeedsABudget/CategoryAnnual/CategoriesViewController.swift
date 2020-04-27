@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SnapKit
 import os.log
 
 class CategoriesViewController: UIViewController {
@@ -26,10 +25,15 @@ class CategoriesViewController: UIViewController {
     
     lazy var categoryTableView: UITableView = {
         let tableView = UITableView()
+        
         view.addSubview(tableView)
-        tableView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
         return tableView
     }()
     

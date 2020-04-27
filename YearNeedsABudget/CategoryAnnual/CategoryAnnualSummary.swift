@@ -14,15 +14,17 @@ struct CategoryAnnualSummary {
     let name: String
     let budgeted: Int
     let activity: Int
+    let hidden: Bool
     let months: [CategoryMonthlySummary]
     
-    init(categoryId: String, categoryGroupId: String, name: String, months: [CategoryMonthlySummary]) {
+    init(categoryId: String, categoryGroupId: String, name: String, months: [CategoryMonthlySummary], hidden: Bool = false) {
         self.categoryId = categoryId
         self.categoryGroupId = categoryGroupId
         self.name = name
         self.budgeted = months.reduce(0) { (result, monthlySummary) -> Int in return result + monthlySummary.budgeted  }
         self.activity = months.reduce(0) { $0 + $1.activity }
         self.months = months
+        self.hidden = hidden
     }
 }
 
@@ -33,14 +35,16 @@ struct CategoryMonthlySummary {
     let name: String
     let budgeted: Int
     let activity: Int
+    let hidden: Bool
     
-    init(month: Int, categoryId: String, categoryGroupId: String, name: String, budgeted: Int, activity: Int) {
+    init(month: Int, categoryId: String, categoryGroupId: String, name: String, budgeted: Int, activity: Int, hidden: Bool = false) {
         self.month = month
         self.categoryId = categoryId
         self.categoryGroupId = categoryGroupId
         self.name = name
         self.budgeted = budgeted
         self.activity = activity
+        self.hidden = hidden
     }
 }
 
@@ -58,18 +62,7 @@ struct CategoryAggregator {
         
         return groupedMonthlySummaries.compactMap { (categorySummaries) -> CategoryAnnualSummary? in
             guard let firstSummary = Array(categorySummaries.value).last else { return nil }
-            return CategoryAnnualSummary(categoryId: categorySummaries.key, categoryGroupId: firstSummary.categoryGroupId, name: firstSummary.name, months: categorySummaries.value)
-        }
-    }
-}
-
-struct BudgetSummaryAggregator {
-    static func combine(cached: [MonthlyBudgetSummary], fetched: [MonthlyBudgetSummary]) -> [MonthlyBudgetSummary] {
-        guard let monthString = cached.first?.month ?? fetched.first?.month, let year = YnabDateFormatter.shared.getYear(from: monthString) else { return [] }
-        return Array(1...YnabDateComponents.elapsedMonths(in: year)).compactMap { (monthNumber) -> MonthlyBudgetSummary? in
-            let fetchedSummary = fetched.first { YnabDateFormatter.shared.getMonthNumber(from: $0.month) == monthNumber }
-            let cachedSummary = cached.first { YnabDateFormatter.shared.getMonthNumber(from: $0.month) == monthNumber }
-            return fetchedSummary ?? cachedSummary
+            return CategoryAnnualSummary(categoryId: categorySummaries.key, categoryGroupId: firstSummary.categoryGroupId, name: firstSummary.name, months: categorySummaries.value, hidden: firstSummary.hidden)
         }
     }
 }

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -27,7 +27,6 @@
 		C6F7F22223F112A0002FFC75 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6F7F22123F112A0002FFC75 /* Assets.xcassets */; };
 		C6F7F22523F112A0002FFC75 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6F7F22323F112A0002FFC75 /* LaunchScreen.storyboard */; };
 		C6F7F23023F112A1002FFC75 /* YearNeedsABudgetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7F22F23F112A1002FFC75 /* YearNeedsABudgetTests.swift */; };
-		C6F7F23C23F12115002FFC75 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = C6F7F23B23F12115002FFC75 /* SnapKit */; };
 		C6F7F23F23F12458002FFC75 /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7F23E23F12458002FFC75 /* CategoryViewModel.swift */; };
 		C6F7F24523F12FA6002FFC75 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7F24423F12FA6002FFC75 /* MockData.swift */; };
 		C6FC04732404E69F0086F436 /* YnabDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FC04722404E69F0086F436 /* YnabDateFormatter.swift */; };
@@ -78,7 +77,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C6F7F23C23F12115002FFC75 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -198,7 +196,6 @@
 			);
 			name = YearNeedsABudget;
 			packageProductDependencies = (
-				C6F7F23B23F12115002FFC75 /* SnapKit */,
 			);
 			productName = YearNeedsABudget;
 			productReference = C6F7F21523F1129E002FFC75 /* YearNeedsABudget.app */;
@@ -251,7 +248,6 @@
 			);
 			mainGroup = C6F7F20C23F1129E002FFC75;
 			packageReferences = (
-				C6F7F23A23F12115002FFC75 /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			productRefGroup = C6F7F21623F1129E002FFC75 /* Products */;
 			projectDirPath = "";
@@ -569,25 +565,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		C6F7F23A23F12115002FFC75 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SnapKit/SnapKit";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.1;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		C6F7F23B23F12115002FFC75 /* SnapKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C6F7F23A23F12115002FFC75 /* XCRemoteSwiftPackageReference "SnapKit" */;
-			productName = SnapKit;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C6F7F20D23F1129E002FFC75 /* Project object */;
 }
