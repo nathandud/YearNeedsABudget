@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		C6609B2F2406101C00D9BA7F /* SyncStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6609B2E2406101C00D9BA7F /* SyncStatus.swift */; };
 		C6609B322415DF8500D9BA7F /* SyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6609B312415DF8500D9BA7F /* SyncService.swift */; };
+		C662405F2459429A00257C12 /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C662405E2459429A00257C12 /* CategoryTableViewCell.swift */; };
+		C66240612459519100257C12 /* CategoryTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66240602459519100257C12 /* CategoryTableViewModel.swift */; };
 		C676696923F3C628003AE8FC /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676696823F3C627003AE8FC /* ProgressBarView.swift */; };
 		C676696D23FCFE4A003AE8FC /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676696C23FCFE4A003AE8FC /* Networking.swift */; };
 		C676696F23FD0077003AE8FC /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676696E23FD0077003AE8FC /* Logging.swift */; };
@@ -27,7 +29,7 @@
 		C6F7F22223F112A0002FFC75 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6F7F22123F112A0002FFC75 /* Assets.xcassets */; };
 		C6F7F22523F112A0002FFC75 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6F7F22323F112A0002FFC75 /* LaunchScreen.storyboard */; };
 		C6F7F23023F112A1002FFC75 /* YearNeedsABudgetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7F22F23F112A1002FFC75 /* YearNeedsABudgetTests.swift */; };
-		C6F7F23F23F12458002FFC75 /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7F23E23F12458002FFC75 /* CategoryViewModel.swift */; };
+		C6F7F23F23F12458002FFC75 /* CategoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7F23E23F12458002FFC75 /* CategoriesViewModel.swift */; };
 		C6F7F24523F12FA6002FFC75 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7F24423F12FA6002FFC75 /* MockData.swift */; };
 		C6FC04732404E69F0086F436 /* YnabDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FC04722404E69F0086F436 /* YnabDateFormatter.swift */; };
 /* End PBXBuildFile section */
@@ -45,6 +47,8 @@
 /* Begin PBXFileReference section */
 		C6609B2E2406101C00D9BA7F /* SyncStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncStatus.swift; sourceTree = "<group>"; };
 		C6609B312415DF8500D9BA7F /* SyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncService.swift; sourceTree = "<group>"; };
+		C662405E2459429A00257C12 /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
+		C66240602459519100257C12 /* CategoryTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewModel.swift; sourceTree = "<group>"; };
 		C676696823F3C627003AE8FC /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
 		C676696C23FCFE4A003AE8FC /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		C676696E23FD0077003AE8FC /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
@@ -67,7 +71,7 @@
 		C6F7F22B23F112A1002FFC75 /* YearNeedsABudgetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YearNeedsABudgetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6F7F22F23F112A1002FFC75 /* YearNeedsABudgetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YearNeedsABudgetTests.swift; sourceTree = "<group>"; };
 		C6F7F23123F112A1002FFC75 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C6F7F23E23F12458002FFC75 /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
+		C6F7F23E23F12458002FFC75 /* CategoriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewModel.swift; sourceTree = "<group>"; };
 		C6F7F24423F12FA6002FFC75 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		C6FC04722404E69F0086F436 /* YnabDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YnabDateFormatter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -98,6 +102,34 @@
 				C6C18FBA245401090001AD54 /* SyncSummary.swift */,
 			);
 			path = Sync;
+			sourceTree = "<group>";
+		};
+		C6624063245952FA00257C12 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C6F7F21C23F1129E002FFC75 /* CategoriesViewController.swift */,
+				C662405E2459429A00257C12 /* CategoryTableViewCell.swift */,
+				C676696823F3C627003AE8FC /* ProgressBarView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		C66240642459530600257C12 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C6F7F23E23F12458002FFC75 /* CategoriesViewModel.swift */,
+				C66240602459519100257C12 /* CategoryTableViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C66240652459534B00257C12 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C676697E2404DDF8003AE8FC /* CategoryAnnualSummary.swift */,
+				C676697C2404D898003AE8FC /* YNABCategoriesByMonthDataClass.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		C676696B23FCFE0F003AE8FC /* Utility */ = {
@@ -158,14 +190,12 @@
 		C6F7F23D23F12409002FFC75 /* CategoryAnnual */ = {
 			isa = PBXGroup;
 			children = (
-				C6F7F21C23F1129E002FFC75 /* CategoriesViewController.swift */,
-				C6F7F23E23F12458002FFC75 /* CategoryViewModel.swift */,
-				C676696823F3C627003AE8FC /* ProgressBarView.swift */,
+				C66240652459534B00257C12 /* Model */,
+				C6624063245952FA00257C12 /* View */,
+				C66240642459530600257C12 /* ViewModel */,
 				C676697023FD04A7003AE8FC /* CategoryRepository.swift */,
 				C676697223FD061A003AE8FC /* CategoryApiService.swift */,
 				C6E6C51F244EB07400B8C611 /* CategoryFileService.swift */,
-				C676697E2404DDF8003AE8FC /* CategoryAnnualSummary.swift */,
-				C676697C2404D898003AE8FC /* YNABCategoriesByMonthDataClass.swift */,
 			);
 			path = CategoryAnnual;
 			sourceTree = "<group>";
@@ -285,9 +315,11 @@
 			files = (
 				C6609B2F2406101C00D9BA7F /* SyncStatus.swift in Sources */,
 				C676696923F3C628003AE8FC /* ProgressBarView.swift in Sources */,
-				C6F7F23F23F12458002FFC75 /* CategoryViewModel.swift in Sources */,
+				C6F7F23F23F12458002FFC75 /* CategoriesViewModel.swift in Sources */,
 				C676697D2404D898003AE8FC /* YNABCategoriesByMonthDataClass.swift in Sources */,
+				C662405F2459429A00257C12 /* CategoryTableViewCell.swift in Sources */,
 				C67669792403A5FA003AE8FC /* Coordinator.swift in Sources */,
+				C66240612459519100257C12 /* CategoryTableViewModel.swift in Sources */,
 				C6F7F24523F12FA6002FFC75 /* MockData.swift in Sources */,
 				C676697B2404D687003AE8FC /* ObservationProtocols.swift in Sources */,
 				C6C18FBB245401090001AD54 /* SyncSummary.swift in Sources */,

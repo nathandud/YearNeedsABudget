@@ -11,7 +11,7 @@ import Foundation
 class CategoriesViewModel: Observer {
     
     var uuid: UUID
-    var categories: [CategoryAnnualSummary] = []
+    var tableViewModels: [CategoryTableViewModel] = []
     private let repository: CategoryRepository
     private var onDataRefresh: ((Bool) -> Void)?
     
@@ -19,13 +19,13 @@ class CategoriesViewModel: Observer {
         self.repository = repository
         self.uuid = UUID()
         self.repository.addObserver(observer: self) { (result) in
-            self.categories = repository.getLatestCategories().filter { !$0.hidden }
+            self.tableViewModels = repository.getLatestCategories().map { CategoryTableViewModel(annualSummary: $0) }
             self.onDataRefresh?(result)
         }
     }
     
     func refreshData(onCompletion: @escaping (Bool) -> Void) {
-        categories = repository.getLatestCategories().filter { !$0.hidden }
+        tableViewModels = repository.getLatestCategories().map { CategoryTableViewModel(annualSummary: $0) }
         onDataRefresh = onCompletion
     }
     

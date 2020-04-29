@@ -20,7 +20,7 @@ class Coordinator {
     }
     
     func start() {
-        let viewController = CategoriesViewController(viewModel: CategoryViewModel(repository: categoryRepository), coordinator: self)
+        let viewController = CategoriesViewController(viewModel: CategoriesViewModel(repository: categoryRepository), coordinator: self)
         navigationController.pushViewController(viewController, animated: false)
     }
     

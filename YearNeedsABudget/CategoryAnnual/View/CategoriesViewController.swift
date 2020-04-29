@@ -11,10 +11,10 @@ import os.log
 
 class CategoriesViewController: UIViewController {
     
-    let viewModel: CategoryViewModel
+    let viewModel: CategoriesViewModel
     weak var coordinator: Coordinator?
     
-    init(viewModel: CategoryViewModel, coordinator: Coordinator) {
+    init(viewModel: CategoriesViewModel, coordinator: Coordinator) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -25,7 +25,6 @@ class CategoriesViewController: UIViewController {
     
     lazy var categoryTableView: UITableView = {
         let tableView = UITableView()
-        
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -39,6 +38,7 @@ class CategoriesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        categoryTableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: "cell")
         categoryTableView.delegate = self
         categoryTableView.dataSource = self
         viewModel.refreshData(onCompletion: { success in
@@ -52,12 +52,17 @@ class CategoriesViewController: UIViewController {
 
 extension CategoriesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.categories.count
+        return viewModel.tableViewModels.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 70
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.textLabel?.text = "\(viewModel.categories[indexPath.row].name): \(viewModel.categories[indexPath.row].activity)"
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as? CategoryTableViewCell else { return UITableViewCell () }
+        cell.configure(with: viewModel.tableViewModels[indexPath.row])
         return cell
     }
+    
 }

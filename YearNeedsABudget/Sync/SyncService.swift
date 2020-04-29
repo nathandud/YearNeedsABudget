@@ -19,10 +19,10 @@ struct SyncService {
         do {
             let json = try Data(contentsOf: getFileUrl(year))
             let syncSummary = try JSONDecoder().decode(YearlySyncSummary.self, from: json)
-            os_log("Fetched sync status file for %{PUBLIC}@", log: .filesystem, type: .info, "\(year)")
+            os_log("Read sync status file for %{PUBLIC}@", log: .filesystem, type: .info, "\(year)")
             return syncSummary
         } catch {
-            os_log("Failed to fetch sync progress year for %{PUBLIC}@: %{PUBLIC}@", log: .filesystem, type: .error, "\(year)", error.localizedDescription)
+            os_log("Failed to read sync progress year for %{PUBLIC}@: %{PUBLIC}@", log: .filesystem, type: .error, "\(year)", error.localizedDescription)
             return nil
         }
     }
