@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C60B1BE0245A8084004862BF /* YnabCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60B1BDF245A8084004862BF /* YnabCalendar.swift */; };
+		C60B1BE2245A93D6004862BF /* YnabMoney.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60B1BE1245A93D6004862BF /* YnabMoney.swift */; };
 		C6609B2F2406101C00D9BA7F /* SyncStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6609B2E2406101C00D9BA7F /* SyncStatus.swift */; };
 		C6609B322415DF8500D9BA7F /* SyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6609B312415DF8500D9BA7F /* SyncService.swift */; };
 		C662405F2459429A00257C12 /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C662405E2459429A00257C12 /* CategoryTableViewCell.swift */; };
@@ -46,6 +47,7 @@
 
 /* Begin PBXFileReference section */
 		C60B1BDF245A8084004862BF /* YnabCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YnabCalendar.swift; sourceTree = "<group>"; };
+		C60B1BE1245A93D6004862BF /* YnabMoney.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YnabMoney.swift; sourceTree = "<group>"; };
 		C6609B2E2406101C00D9BA7F /* SyncStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncStatus.swift; sourceTree = "<group>"; };
 		C6609B312415DF8500D9BA7F /* SyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncService.swift; sourceTree = "<group>"; };
 		C662405E2459429A00257C12 /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				C676696E23FD0077003AE8FC /* Logging.swift */,
 				C676697A2404D687003AE8FC /* ObservationProtocols.swift */,
 				C60B1BDF245A8084004862BF /* YnabCalendar.swift */,
+				C60B1BE1245A93D6004862BF /* YnabMoney.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -329,6 +332,7 @@
 				C67669772403A4F3003AE8FC /* Scratch.swift in Sources */,
 				C676697F2404DDF8003AE8FC /* CategoryAnnualSummary.swift in Sources */,
 				C676697323FD061A003AE8FC /* CategoryApiService.swift in Sources */,
+				C60B1BE2245A93D6004862BF /* YnabMoney.swift in Sources */,
 				C6E6C520244EB07400B8C611 /* CategoryFileService.swift in Sources */,
 				C676696D23FCFE4A003AE8FC /* Networking.swift in Sources */,
 				C6F7F21D23F1129E002FFC75 /* CategoriesViewController.swift in Sources */,

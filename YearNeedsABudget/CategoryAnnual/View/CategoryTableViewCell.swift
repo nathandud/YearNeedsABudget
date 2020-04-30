@@ -11,11 +11,11 @@ import UIKit
 class CategoryTableViewCell: UITableViewCell {
     
     func configure(with viewModel: CategoryTableViewModel) {
-        titleLabel.text = viewModel.name
-        spentLabel.text = "\(viewModel.spentThisYear)"
+        titleLabel.text = viewModel.nameLabelText
+        spentLabel.text = viewModel.spentThisYearLabelText
     }
     
-    private lazy var titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = { [unowned self] in
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         addSubview(label)
@@ -30,7 +30,7 @@ class CategoryTableViewCell: UITableViewCell {
         return label
     }()
     
-    private lazy var spentLabel: UILabel = {
+    private lazy var spentLabel: UILabel = { [unowned self] in
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20)
         addSubview(label)
@@ -45,6 +45,10 @@ class CategoryTableViewCell: UITableViewCell {
         return label
     }()
     
+    private lazy var progressView: ProgressBarView = {
+        let progressBar = ProgressBarView()
+        return progressBar
+    }()
 
     
 }

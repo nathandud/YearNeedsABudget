@@ -17,7 +17,7 @@ class ProgressBarView: UIView {
         super.init(frame: frame)
     }
     
-    lazy var backgroundBar: UIView = {
+    lazy var backgroundBar: UIView = { [unowned self] in
         let bar = UIView()
         bar.backgroundColor = .lightGray
         bar.layer.cornerRadius = 10
@@ -33,7 +33,7 @@ class ProgressBarView: UIView {
         return bar
     }()
     
-    lazy var progressBar: UIView = {
+    lazy var progressBar: UIView = { [unowned self] in
         let progress = UIView()
         progress.backgroundColor = .green
         progress.layer.cornerRadius = 10
@@ -49,7 +49,7 @@ class ProgressBarView: UIView {
         return progress
     }()
     
-    lazy var targetMarker: UIView = {
+    lazy var targetMarker: UIView = { [unowned self] in
         let marker = UIView()
         marker.backgroundColor = .black
         marker.layer.cornerRadius = 0.75
