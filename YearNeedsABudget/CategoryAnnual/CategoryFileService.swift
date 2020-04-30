@@ -12,7 +12,8 @@ import os.log
 struct CategoryFileService {
     
     static func saveMonthlyBudgetSummaries(_ monthlySummaries: [MonthlyBudgetSummary]) {
-        guard let monthString = monthlySummaries.first?.month, let year = YnabDateFormatter.shared.getYear(from: monthString) else {
+        guard let monthString = monthlySummaries.first?.month,
+            let year = YnabCalendar.getYear(from: monthString) else {
             os_log("No monthly summaries to save", log: .filesystem, type: .info)
             return
         }

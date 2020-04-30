@@ -41,7 +41,7 @@ struct MonthlySyncReport: Codable {
         
         month = try values.decode(Int.self, forKey: .month)
         status = SyncStatus(rawValue: statusInt) ?? .outOfDate
-        if let lastUpdated = timestamp, let lastUpdatedDate = YnabDateFormatter.shared.getDate(timestamp: lastUpdated) {
+        if let lastUpdated = timestamp, let lastUpdatedDate = YnabCalendar.getDate(timestamp: lastUpdated) {
             lastSyncTime = lastUpdatedDate
         } else {
             lastSyncTime = nil
@@ -53,7 +53,7 @@ struct MonthlySyncReport: Codable {
         
         let statusInt = status.rawValue
         var timestamp: String? = nil
-        if let sync = lastSyncTime { timestamp = YnabDateFormatter.shared.getTimestamp(sync) }
+        if let sync = lastSyncTime { timestamp = YnabCalendar.getTimestamp(sync) }
         
         try container.encode(statusInt, forKey: .status)
         try container.encode(timestamp, forKey: .lastSyncTime)

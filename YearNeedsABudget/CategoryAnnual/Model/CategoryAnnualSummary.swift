@@ -52,7 +52,7 @@ struct CategoryAggregator {
     static func aggregate(monthlyBudgetSummaries: [MonthlyBudgetSummary]) -> [CategoryAnnualSummary] {
         
         let categoryMonthlySummaries = monthlyBudgetSummaries.map { (monthlySummary) -> [CategoryMonthlySummary] in
-            guard let categories = monthlySummary.categories, let month = YnabDateFormatter.shared.getMonthNumber(from: monthlySummary.month) else { return [] }
+            guard let categories = monthlySummary.categories, let month = YnabCalendar.getMonth(from: monthlySummary.month) else { return [] }
             return categories.map { (category) -> CategoryMonthlySummary in
                 return CategoryMonthlySummary(month: month, categoryId: category.id, categoryGroupId: category.categoryGroupId, name: category.name, budgeted: category.budgeted, spent: category.activity, hidden: category.hidden)
             }

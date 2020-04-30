@@ -23,14 +23,14 @@ class CategoryRepository {
     
     init() {
         fetchedMonthlySummaries = []
-        cachedMonthlySummaries = CategoryFileService.getMonthlyBudgetSummaries(for: YnabDateComponents.currentYear)
-        monthlySyncReports = SyncService.getYearlySyncSummary(for: YnabDateComponents.currentYear)?.monthlyReports ?? []
+        cachedMonthlySummaries = CategoryFileService.getMonthlyBudgetSummaries(for: YnabCalendar.currentYear)
+        monthlySyncReports = SyncService.getYearlySyncSummary(for: YnabCalendar.currentYear)?.monthlyReports ?? []
         latestCategories = CategoryAggregator.aggregate(monthlyBudgetSummaries: cachedMonthlySummaries)
     }
     
     //MARK: - Public
     
-    func getLatestCategories(for year: Int = YnabDateComponents.currentYear) -> [CategoryAnnualSummary] {
+    func getLatestCategories(for year: Int = YnabCalendar.currentYear) -> [CategoryAnnualSummary] {
         let staleMonths = getMonthsNeedingRefresh(for: year)
         if !staleMonths.isEmpty || latestCategories.isEmpty {
             latestCategories.removeAll()
@@ -41,13 +41,13 @@ class CategoryRepository {
     
     //MARK: - Private
     
-    private func getMonthsNeedingRefresh(for year: Int = YnabDateComponents.currentYear) -> [Int] {
+    private func getMonthsNeedingRefresh(for year: Int = YnabCalendar.currentYear) -> [Int] {
         return monthlySyncReports.compactMap { (monthlySyncReport) -> Int? in
             return SyncService.getUpdatedSyncStatus(for: monthlySyncReport) != .upToDate ? monthlySyncReport.month : nil
         }
     }
     
-    private func fetchLatestAnnualCategoryData(for year: Int = YnabDateComponents.currentYear, staleMonths: [Int] = []) {
+    private func fetchLatestAnnualCategoryData(for year: Int = YnabCalendar.currentYear, staleMonths: [Int] = []) {
         self.error = nil
         for month in staleMonths {
             guard error == nil else {
@@ -111,10 +111,11 @@ class CategoryRepository {
     }
     
     private func updateCachedBudgetSummaries(with fetchedMonthlySummaries: [MonthlyBudgetSummary]) {
-        guard let monthString = fetchedMonthlySummaries.first?.month, let year = YnabDateFormatter.shared.getYear(from: monthString) else { return }
-        cachedMonthlySummaries = Array(1...YnabDateComponents.elapsedMonths(in: year)).compactMap { (monthNumber) -> MonthlyBudgetSummary? in
-            let fetchedSummary = fetchedMonthlySummaries.first { YnabDateFormatter.shared.getMonthNumber(from: $0.month) == monthNumber }
-            let cachedSummary = cachedMonthlySummaries.first { YnabDateFormatter.shared.getMonthNumber(from: $0.month) == monthNumber }
+        guard let monthString = fetchedMonthlySummaries.first?.month,
+            let year = YnabCalendar.getMonth(from: monthString) else { return }
+            cachedMonthlySummaries = Array(1...YnabCalendar.elapsedMonths(in: year)).compactMap { (monthNumber) -> MonthlyBudgetSummary? in
+                let fetchedSummary = fetchedMonthlySummaries.first { YnabCalendar.getMonth(from: $0.month) == monthNumber }
+            let cachedSummary = cachedMonthlySummaries.first { YnabCalendar.getMonth(from: $0.month) == monthNumber }
             return fetchedSummary ?? cachedSummary
         }
         CategoryFileService.saveMonthlyBudgetSummaries(cachedMonthlySummaries)

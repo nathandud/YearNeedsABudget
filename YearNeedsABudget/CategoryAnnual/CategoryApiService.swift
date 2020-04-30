@@ -12,8 +12,8 @@ import os.log
 struct CategoryApiService {
     
     static func fetchMonthlySummary(month: Int, year: Int? = nil, _ onCompletion: @escaping (MonthlyBudgetSummary?, String?) -> ()) {
-        guard let monthString = YnabDateFormatter.shared.getFirstDayOfMonth(month, year: year) else {
-            fatalError("Invalid month sent to YnabDateFormatter")
+        guard let monthString = YnabCalendar.getFirstDayOfMonth(month, year: year) else {
+            fatalError("Invalid month could not be parsed by YnabCalendar")
         }
         
         //TODO: Store the budget id in the keychain (is this necessary? probably not since it's a URL parameter)
