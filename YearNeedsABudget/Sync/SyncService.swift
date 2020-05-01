@@ -43,7 +43,7 @@ struct SyncService {
             return
         }
         
-        let monthlySummaries = Array(1...YnabCalendar.elapsedMonths(in: year)).map { (month) -> MonthlySyncReport in
+        let monthlySummaries = Array(1...YnabCalendar.elapsedMonths(year: year)).map { (month) -> MonthlySyncReport in
             if let existingSummary = yearlySyncSummary.monthlyReports.first(where: { $0.month == month }) {
                 let updatedSyncStatus = getUpdatedSyncStatus(for: existingSummary)
                 let lastSync = existingSummary.lastSyncTime

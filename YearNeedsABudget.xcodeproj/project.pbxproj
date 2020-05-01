@@ -13,7 +13,7 @@
 		C6609B322415DF8500D9BA7F /* SyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6609B312415DF8500D9BA7F /* SyncService.swift */; };
 		C662405F2459429A00257C12 /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C662405E2459429A00257C12 /* CategoryTableViewCell.swift */; };
 		C66240612459519100257C12 /* CategoryTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66240602459519100257C12 /* CategoryTableViewModel.swift */; };
-		C676696923F3C628003AE8FC /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676696823F3C627003AE8FC /* ProgressBarView.swift */; };
+		C676696923F3C628003AE8FC /* CategoryYearlySpendingProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676696823F3C627003AE8FC /* CategoryYearlySpendingProgressBarView.swift */; };
 		C676696D23FCFE4A003AE8FC /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676696C23FCFE4A003AE8FC /* Networking.swift */; };
 		C676696F23FD0077003AE8FC /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676696E23FD0077003AE8FC /* Logging.swift */; };
 		C676697123FD04A7003AE8FC /* CategoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C676697023FD04A7003AE8FC /* CategoryRepository.swift */; };
@@ -52,7 +52,7 @@
 		C6609B312415DF8500D9BA7F /* SyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncService.swift; sourceTree = "<group>"; };
 		C662405E2459429A00257C12 /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
 		C66240602459519100257C12 /* CategoryTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewModel.swift; sourceTree = "<group>"; };
-		C676696823F3C627003AE8FC /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
+		C676696823F3C627003AE8FC /* CategoryYearlySpendingProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryYearlySpendingProgressBarView.swift; sourceTree = "<group>"; };
 		C676696C23FCFE4A003AE8FC /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		C676696E23FD0077003AE8FC /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		C676697023FD04A7003AE8FC /* CategoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRepository.swift; sourceTree = "<group>"; };
@@ -111,7 +111,7 @@
 			children = (
 				C6F7F21C23F1129E002FFC75 /* CategoriesViewController.swift */,
 				C662405E2459429A00257C12 /* CategoryTableViewCell.swift */,
-				C676696823F3C627003AE8FC /* ProgressBarView.swift */,
+				C676696823F3C627003AE8FC /* CategoryYearlySpendingProgressBarView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -317,7 +317,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C6609B2F2406101C00D9BA7F /* SyncStatus.swift in Sources */,
-				C676696923F3C628003AE8FC /* ProgressBarView.swift in Sources */,
+				C676696923F3C628003AE8FC /* CategoryYearlySpendingProgressBarView.swift in Sources */,
 				C6F7F23F23F12458002FFC75 /* CategoriesViewModel.swift in Sources */,
 				C676697D2404D898003AE8FC /* YNABCategoriesByMonthDataClass.swift in Sources */,
 				C662405F2459429A00257C12 /* CategoryTableViewCell.swift in Sources */,

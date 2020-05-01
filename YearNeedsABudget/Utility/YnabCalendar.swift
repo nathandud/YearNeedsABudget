@@ -32,8 +32,20 @@ struct YnabCalendar {
         return YnabDateFormatter.shared.getDate(timestamp: timestamp)
     }
     
-    static func elapsedMonths(in year: Int) -> Int {
+    static func elapsedMonths(year: Int) -> Int {
         return year == currentYear ? currentMonth : 12
+    }
+    
+    static func elapsedDays(year: Int) -> Int {
+        if year == currentYear {
+            return Calendar.current.ordinality(of: .day, in: .year, for: Date()) ?? 0
+        }
+        return totalDays(year: year)
+    }
+    
+    static func totalDays(year: Int) -> Int {
+        let date = Calendar.current.date(from: DateComponents(year: year, month: 7)) ?? Date()
+        return Calendar.current.range(of: .day, in: .year, for: date)?.count ?? 365
     }
 }
 

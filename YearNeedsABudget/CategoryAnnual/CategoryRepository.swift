@@ -113,7 +113,7 @@ class CategoryRepository {
     private func updateCachedBudgetSummaries(with fetchedMonthlySummaries: [MonthlyBudgetSummary]) {
         guard let monthString = fetchedMonthlySummaries.first?.month,
             let year = YnabCalendar.getMonth(from: monthString) else { return }
-            cachedMonthlySummaries = Array(1...YnabCalendar.elapsedMonths(in: year)).compactMap { (monthNumber) -> MonthlyBudgetSummary? in
+            cachedMonthlySummaries = Array(1...YnabCalendar.elapsedMonths(year: year)).compactMap { (monthNumber) -> MonthlyBudgetSummary? in
                 let fetchedSummary = fetchedMonthlySummaries.first { YnabCalendar.getMonth(from: $0.month) == monthNumber }
             let cachedSummary = cachedMonthlySummaries.first { YnabCalendar.getMonth(from: $0.month) == monthNumber }
             return fetchedSummary ?? cachedSummary

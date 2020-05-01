@@ -9,15 +9,18 @@
 import Foundation
 
 struct CategoryAnnualSummary {
+    let year: Int
     let categoryId: String
     let categoryGroupId: String
     let name: String
     let budgeted: Int
     let spent: Int
+    let spendingTarget: Int = 2000000
     let hidden: Bool
     let months: [CategoryMonthlySummary]
     
-    init(categoryId: String, categoryGroupId: String, name: String, months: [CategoryMonthlySummary], hidden: Bool = false) {
+    init(year: Int, categoryId: String, categoryGroupId: String, name: String, months: [CategoryMonthlySummary], hidden: Bool = false) {
+        self.year = year
         self.categoryId = categoryId
         self.categoryGroupId = categoryGroupId
         self.name = name
@@ -29,6 +32,7 @@ struct CategoryAnnualSummary {
 }
 
 struct CategoryMonthlySummary {
+    let year: Int
     let month: Int
     let categoryId: String
     let categoryGroupId: String
@@ -37,7 +41,8 @@ struct CategoryMonthlySummary {
     let activity: Int
     let hidden: Bool
     
-    init(month: Int, categoryId: String, categoryGroupId: String, name: String, budgeted: Int, spent: Int, hidden: Bool = false) {
+    init(year: Int, month: Int, categoryId: String, categoryGroupId: String, name: String, budgeted: Int, spent: Int, hidden: Bool = false) {
+        self.year = year
         self.month = month
         self.categoryId = categoryId
         self.categoryGroupId = categoryGroupId
@@ -52,9 +57,9 @@ struct CategoryAggregator {
     static func aggregate(monthlyBudgetSummaries: [MonthlyBudgetSummary]) -> [CategoryAnnualSummary] {
         
         let categoryMonthlySummaries = monthlyBudgetSummaries.map { (monthlySummary) -> [CategoryMonthlySummary] in
-            guard let categories = monthlySummary.categories, let month = YnabCalendar.getMonth(from: monthlySummary.month) else { return [] }
+            guard let categories = monthlySummary.categories, let month = YnabCalendar.getMonth(from: monthlySummary.month), let year = YnabCalendar.getYear(from: monthlySummary.month) else { return [] }
             return categories.map { (category) -> CategoryMonthlySummary in
-                return CategoryMonthlySummary(month: month, categoryId: category.id, categoryGroupId: category.categoryGroupId, name: category.name, budgeted: category.budgeted, spent: category.activity, hidden: category.hidden)
+                return CategoryMonthlySummary(year: year, month: month, categoryId: category.id, categoryGroupId: category.categoryGroupId, name: category.name, budgeted: category.budgeted, spent: category.activity, hidden: category.hidden)
             }
         }.flatMap { $0 }
         
@@ -62,7 +67,7 @@ struct CategoryAggregator {
         
         return groupedMonthlySummaries.compactMap { (categorySummaries) -> CategoryAnnualSummary? in
             guard let firstSummary = Array(categorySummaries.value).last else { return nil }
-            return CategoryAnnualSummary(categoryId: categorySummaries.key, categoryGroupId: firstSummary.categoryGroupId, name: firstSummary.name, months: categorySummaries.value, hidden: firstSummary.hidden)
+            return CategoryAnnualSummary(year: firstSummary.year, categoryId: categorySummaries.key, categoryGroupId: firstSummary.categoryGroupId, name: firstSummary.name, months: categorySummaries.value, hidden: firstSummary.hidden)
         }
     }
 }
