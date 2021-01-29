@@ -16,7 +16,7 @@ class CategoryTableViewCell: UITableViewCell {
         self.viewModel = viewModel
         titleLabel.text = viewModel.nameLabelText
         spentLabel.text = viewModel.spentThisYearLabelText
-        progressView.tag = 1
+        progressView.updateProgress(percentSpent: viewModel.percentSpent, percentOfYear: viewModel.percentOfYear)
     }
     
     override func prepareForReuse() {
@@ -57,6 +57,7 @@ class CategoryTableViewCell: UITableViewCell {
     private lazy var progressView: CategoryYearlySpendingProgressBarView = { [unowned self] in
         let spent = self.viewModel?.percentSpent ?? 0.0
         let elapsed = self.viewModel?.percentOfYear ?? 0
+        
         let progressBar = CategoryYearlySpendingProgressBarView(percentSpent: spent, percentOfYear: elapsed)
         addSubview(progressBar)
         

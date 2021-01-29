@@ -25,7 +25,7 @@ class CategoryTableViewModel {
         spentThisYearLabelText = YnabMoney.getCurrencyString(serverAmount: annualSummary.spent)
         budgetedThisYearLabelText = YnabMoney.getCurrencyString(serverAmount: annualSummary.budgeted)
         spendingTarget = annualSummary.spendingTarget
-        percentSpent = Double(annualSummary.spent) / Double(annualSummary.spendingTarget)
+        percentSpent = Double(abs(annualSummary.spent)) / Double(annualSummary.spendingTarget)
         percentOfYear = Double(YnabCalendar.elapsedDays(year: annualSummary.year)) / Double(YnabCalendar.totalDays(year: annualSummary.year))
     }
 }
